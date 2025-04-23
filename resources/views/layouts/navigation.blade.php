@@ -1,27 +1,92 @@
 <!-- resources/views/layouts/navigation.blade.php -->
-<nav class="bg-white shadow-sm">
+<nav class="bg-white shadow-sm sticky top-0 z-50 transition-all duration-300" x-data="{ open: false }">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <div class="flex-shrink-0 flex items-center">
-                    <span class="text-xl font-bold">Lab Management</span>
+        <div class="flex justify-between h-16 items-center">
+            <!-- Logo and mobile menu button -->
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <a href="{{ route('dashboard') }}" class="text-xl font-bold text-blue-600 hover:text-blue-800 transition-colors duration-300">
+                        FSJES Management
+                    </a>
                 </div>
-                <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+
+                <!-- Desktop Navigation -->
+                <div class="hidden sm:ml-6 sm:flex sm:space-x-2">
+                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10 2a1 1 0 00-.707.293l-7 7a1 1 0 001.414 1.414L4 9.414V17a1 1 0 001 1h10a1 1 0 001-1V9.414l1.293 1.293a1 1 0 001.414-1.414l-7-7A1 1 0 0010 2z" />
+                        </svg>
+                        dashboard
+                    </x-nav-link>
+
                     <x-nav-link href="{{ route('laboratoires.index') }}" :active="request()->routeIs('laboratoires.*')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M11.17 3a1 1 0 01.98.8l1.5 8a1 1 0 01-.46 1.07l-1.26.63V15a1 1 0 01-1 1h-1a1 1 0 01-1-1v-1.5l-1.26-.63a1 1 0 01-.46-1.07l1.5-8a1 1 0 01.98-.8h1.66zm-1.76 7h2.19l-1.09-5.8h-.01L9.41 10zM6 4a1 1 0 00-1 1v10a1 1 0 001 1h1a1 1 0 001-1v-2.5l.5-.25V15a1 1 0 001 1h1a1 1 0 001-1V5a1 1 0 00-1-1H6z" clip-rule="evenodd" />
+                        </svg>
                         Laboratoires
                     </x-nav-link>
+
                     <x-nav-link href="{{ route('profs.index') }}" :active="request()->routeIs('profs.*')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v1h8v-1zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-1a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v1h-3zM4.75 12.094A5.973 5.973 0 004 15v1H1v-1a3 3 0 013.75-2.906z" />
+                        </svg>
                         Professeurs
                     </x-nav-link>
+
                     <x-nav-link href="{{ route('doctorants.index') }}" :active="request()->routeIs('doctorants.*')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                        </svg>
                         Doctorants
                     </x-nav-link>
                 </div>
             </div>
-            <div class="hidden sm:ml-6 sm:flex sm:items-center">
+
+            <!-- Right side (logout) -->
+            <div class="hidden sm:flex sm:items-center space-x-4">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" class="text-gray-500 hover:text-gray-700">Déconnexion</button>
+                    <button type="submit" class="flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
+                        </svg>
+                        Déconnexion
+                    </button>
+                </form>
+            </div>
+
+            <!-- Mobile menu button -->
+            <div class="-mr-2 flex items-center sm:hidden">
+                <button @click="open = !open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="sm:hidden" x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95">
+        <div class="pt-2 pb-3 space-y-1">
+            <x-mobile-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                dashboard
+            </x-mobile-nav-link>
+            <x-mobile-nav-link href="{{ route('laboratoires.index') }}" :active="request()->routeIs('laboratoires.*')">
+                Laboratoires
+            </x-mobile-nav-link>
+            <x-mobile-nav-link href="{{ route('profs.index') }}" :active="request()->routeIs('profs.*')">
+                Professeurs
+            </x-mobile-nav-link>
+            <x-mobile-nav-link href="{{ route('doctorants.index') }}" :active="request()->routeIs('doctorants.*')">
+                Doctorants
+            </x-mobile-nav-link>
+            <div class="border-t border-gray-200 pt-4 pb-3">
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="block w-full px-4 py-2 text-left text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">
+                        Déconnexion
+                    </button>
                 </form>
             </div>
         </div>

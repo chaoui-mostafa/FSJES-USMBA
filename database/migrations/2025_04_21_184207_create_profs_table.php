@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('type', 100);
             $table->enum('sexe', ['M','F']);
             $table->foreignId('id_laboratoire')->constrained('laboratoires');
+
             $table->timestamps();
         });
     }

@@ -34,8 +34,10 @@ class LaboratoireController extends Controller
 
     public function show(Laboratoire $laboratoire)
     {
+        // Make sure you're using route model binding correctly
         return view('laboratoires.show', compact('laboratoire'));
     }
+
 
     public function edit(Laboratoire $laboratoire)
     {

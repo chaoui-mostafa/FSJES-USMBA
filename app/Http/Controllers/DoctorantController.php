@@ -6,6 +6,9 @@ use App\Models\Doctorant;
 use App\Models\Prof;
 use App\Models\Laboratoire;
 use Illuminate\Http\Request;
+use App\Exports\DoctorantsExport;
+use App\Imports\DoctorantsImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DoctorantController extends Controller
 {
@@ -114,5 +117,46 @@ class DoctorantController extends Controller
         $doctorant->update(['id_prof' => $request->new_prof_id]);
 
         return back()->with('success', 'Directeur de thèse changé avec succès.');
+    }
+
+    /**
+     * Export doctorants to Excel
+     */
+    public function export()
+    {
+        return Excel::download(new DoctorantsExport, 'doctorants_' . now()->format('Y-m-d') . '.xlsx');
+    }
+
+    /**
+     * Import doctorants from Excel
+     */
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls|max:2048'
+        ]);
+
+        try {
+            Excel::import(new DoctorantsImport, $request->file('file'));
+            return back()->with('success', 'Importation réussie!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Erreur lors de l\'importation: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Download import template
+     */
+    public function template()
+    {
+        $headers = [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        ];
+
+        return response()->download(
+            storage_path('app/public/import_template.xlsx'),
+            'doctorants_template.xlsx',
+            $headers
+        );
     }
 }

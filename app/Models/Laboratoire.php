@@ -9,14 +9,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Laboratoire extends Model
 {
     use HasFactory;
+    // protected $primaryKey = 'id_laboratoire';
 
-    protected $primaryKey = 'id_laboratoire';
-    protected $fillable = [
-        'nom',
-        'nom_ar',
-        'localisation'
-    ];
 
+    protected $fillable = ['nom', 'nom_ar', 'localisation'];
     /**
      * Get all profs for the laboratoire
      */
@@ -32,4 +28,8 @@ class Laboratoire extends Model
     {
         return $this->hasMany(Doctorant::class, 'id_laboratoire');
     }
+    // public function getRouteKeyName()
+    // {
+    //     return 'laboratoire';
+    // }
 }
