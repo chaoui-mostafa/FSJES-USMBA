@@ -8,7 +8,7 @@
             <p class="mt-1 max-w-2xl text-sm text-gray-500">Update professor information</p>
         </div>
         <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
-            <form action="{{ route('profs.update', $prof->id_prof) }}" method="POST" class="divide-y divide-gray-200">
+            <form action="{{ route('profs.update', $prof->id) }}" method="POST" class="divide-y divide-gray-200">
                 @csrf
                 @method('PUT')
                 <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">

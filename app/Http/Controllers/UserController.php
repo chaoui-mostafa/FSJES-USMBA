@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
 
 class UserController extends Controller
 {
@@ -12,7 +14,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::latest()->paginate(600);
+        return view('users.index', compact('users'));
     }
 
     /**
@@ -20,7 +23,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('users.create');
     }
 
     /**
@@ -28,7 +31,25 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'telephone' => ['nullable', 'string', 'max:20'],
+            'role' => ['required', 'string', 'in:admin,prof,doctorant'],
+            'statut' => ['required', 'string', 'in:active,inactive'],
+        ]);
+
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'telephone' => $request->telephone,
+            'role' => $request->role,
+            'statut' => $request->statut,
+        ]);
+
+        return redirect()->route('users.index')->with('success', 'User created successfully.');
     }
 
     /**
@@ -36,7 +57,11 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        // $stats = [
+        //     'users' => User::count(),
+        //     // يمكنك إضافة بيانات أخرى هنا مثل 'orders', 'products', etc.
+        // ];
+        return view('users.show', compact('user'));
     }
 
     /**
@@ -44,7 +69,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return view('users.edit', compact('user'));
     }
 
     /**
@@ -52,7 +77,30 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', "unique:users,email,{$user->id}"],
+            'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
+            'telephone' => ['nullable', 'string', 'max:20'],
+            'role' => ['required', 'string', 'in:admin,prof,doctorant'],
+            'statut' => ['required', 'string', 'in:active,inactive'],
+        ]);
+
+        $data = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'telephone' => $request->telephone,
+            'role' => $request->role,
+            'statut' => $request->statut,
+        ];
+
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $user->update($data);
+
+        return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
 
     /**
@@ -60,6 +108,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return redirect()->route('users.index')->with('success', 'User deleted successfully.');
     }
 }

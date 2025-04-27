@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('profs', function (Blueprint $table) {
-            $table->id('id_prof');
+            $table->id();
             $table->foreignId('user_id')->constrained();
             $table->string('nom');
             $table->string('nom_ar');

@@ -11,7 +11,7 @@ class Prof extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'id_prof';
+    //  protected $primaryKey = 'id_prof';
     protected $fillable = [
         'user_id',
         'nom',

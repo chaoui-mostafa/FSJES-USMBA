@@ -60,9 +60,51 @@
     <div class="bg-white shadow overflow-hidden sm:rounded-lg">
         <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
             <h3 class="text-lg leading-6 font-medium text-gray-900">Liste des Doctorants</h3>
-            <a href="{{ route('doctorants.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors">
+            <!-- <a href="{{ route('doctorants.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors">
                 Ajouter Doctorant
-            </a>
+            </a> -->
+            <livewire@custom-sql-query />
+
+            <form method="GET" action="{{ route('doctorants.index') }}" class="flex items-center">
+                    <input type="text" name="search" value="{{ old('search', $search) }}" class="px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="ابحث عن طالب دكتوراه...">
+                    <button type="submit" class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none">بحث</button>
+                </form>
+        </div>
+
+        <!-- Search Filters -->
+        <div class="px-4 py-3 bg-gray-50 border-t border-gray-200">
+            <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
+                <div>
+                    <label for="search-cne" class="block text-xs font-medium text-gray-700">CNE</label>
+                    <input type="text" id="search-cne" placeholder="Rechercher par CNE..."
+                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-1 px-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm">
+                </div>
+                <div>
+                    <label for="search-nom" class="block text-xs font-medium text-gray-700">Nom</label>
+                    <input type="text" id="search-nom" placeholder="Rechercher par nom..."
+                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-1 px-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm">
+                </div>
+                <div>
+                    <label for="search-prenom" class="block text-xs font-medium text-gray-700">Prénom</label>
+                    <input type="text" id="search-prenom" placeholder="Rechercher par prénom..."
+                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-1 px-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm">
+                </div>
+                <div>
+                    <label for="search-directeur" class="block text-xs font-medium text-gray-700">Directeur</label>
+                    <input type="text" id="search-directeur" placeholder="Rechercher par directeur..."
+                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-1 px-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm">
+                </div>
+                <div>
+                    <label for="search-laboratoire" class="block text-xs font-medium text-gray-700">Laboratoire</label>
+                    <input type="text" id="search-laboratoire" placeholder="Rechercher par laboratoire..."
+                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-1 px-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm">
+                </div>
+                <div class="flex items-end">
+                    <button id="reset-search" class="bg-gray-200 text-gray-700 px-3 py-1 rounded-md text-sm hover:bg-gray-300 transition-colors">
+                        Réinitialiser
+                    </button>
+                </div>
+            </div>
         </div>
 
         <!-- Success/Error Messages -->
@@ -89,7 +131,7 @@
         @endif
 
         <div class="border-t border-gray-200">
-            <table class="min-w-full divide-y divide-gray-200">
+            <table class="min-w-full divide-y divide-gray-200" id="doctorants-table">
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CNE</th>
@@ -102,12 +144,12 @@
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                     @foreach($doctorants as $doctorant)
-                    <tr>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->cne }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->nom }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->prenom }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->prof->nom ?? 'N/A' }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->laboratoire->nom ?? 'N/A' }}</td>
+                    <tr class="doctorant-row">
+                        <td class="px-6 py-4 whitespace-nowrap cne">{{ $doctorant->cne }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap nom">{{ $doctorant->nom }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap prenom">{{ $doctorant->prenom }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap directeur">{{ $doctorant->prof->nom ?? 'N/A' }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap laboratoire">{{ $doctorant->laboratoire->nom ?? 'N/A' }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <div class="flex space-x-2">
                                 <a href="{{ route('doctorants.show', $doctorant->id) }}"
@@ -143,6 +185,11 @@
                     @endforeach
                 </tbody>
             </table>
+
+            <!-- Pagination -->
+            <div class="px-4 py-3 bg-gray-50 border-t border-gray-200 sm:px-6">
+                {{ $doctorants->links() }}
+            </div>
         </div>
     </div>
 </div>
@@ -157,6 +204,60 @@
         if (nextSibling) {
             nextSibling.innerText = fileName;
         }
+    });
+
+    // Live search functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInputs = {
+            cne: document.getElementById('search-cne'),
+            nom: document.getElementById('search-nom'),
+            prenom: document.getElementById('search-prenom'),
+            directeur: document.getElementById('search-directeur'),
+            laboratoire: document.getElementById('search-laboratoire')
+        };
+
+        const resetButton = document.getElementById('reset-search');
+        const rows = document.querySelectorAll('.doctorant-row');
+
+        function filterRows() {
+            const filters = {
+                cne: searchInputs.cne.value.toLowerCase(),
+                nom: searchInputs.nom.value.toLowerCase(),
+                prenom: searchInputs.prenom.value.toLowerCase(),
+                directeur: searchInputs.directeur.value.toLowerCase(),
+                laboratoire: searchInputs.laboratoire.value.toLowerCase()
+            };
+
+            rows.forEach(row => {
+                const cne = row.querySelector('.cne').textContent.toLowerCase();
+                const nom = row.querySelector('.nom').textContent.toLowerCase();
+                const prenom = row.querySelector('.prenom').textContent.toLowerCase();
+                const directeur = row.querySelector('.directeur').textContent.toLowerCase();
+                const laboratoire = row.querySelector('.laboratoire').textContent.toLowerCase();
+
+                const matches =
+                    cne.includes(filters.cne) &&
+                    nom.includes(filters.nom) &&
+                    prenom.includes(filters.prenom) &&
+                    directeur.includes(filters.directeur) &&
+                    laboratoire.includes(filters.laboratoire);
+
+                row.style.display = matches ? '' : 'none';
+            });
+        }
+
+        // Add event listeners to all search inputs
+        Object.values(searchInputs).forEach(input => {
+            input.addEventListener('input', filterRows);
+        });
+
+        // Reset button functionality
+        resetButton.addEventListener('click', function() {
+            Object.values(searchInputs).forEach(input => {
+                input.value = '';
+            });
+            filterRows();
+        });
     });
 </script>
 @endpush

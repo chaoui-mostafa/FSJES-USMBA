@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LaboratoireController;
 use App\Http\Controllers\ProfController;
 use App\Http\Controllers\DoctorantController;
+use App\Http\Controllers\UserController;
 
 
 /*
@@ -101,3 +102,36 @@ use Maatwebsite\Excel\Facades\Excel;
 //     return Excel::download(new ExampleExport, 'example.xlsx');
 // });
 
+
+Route::resource('users', UserController::class);
+//     ->except(['create', 'edit', 'update', 'destroy']);
+Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
+Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+Route::get('users/{user}/reset-password', [UserController::class, 'resetPassword'])
+    ->name('users.reset-password');
+// routes/web.php
+
+use App\Http\Controllers\StudentController;
+
+// use App\Http\Controllers\StudentController;
+
+Route::get('/students', [StudentController::class, 'index'])->name('students.index');
+Route::post('/students/upload', [StudentController::class, 'upload'])->name('students.upload');
+
+Route::get('/sql-query', function () {
+    return view('sql-page');
+});
+// عرض الطلبة الحاليين
+Route::get('/students/current', [StudentController::class, 'showCurrent'])->name('students.current');
+
+// عرض السجل
+Route::get('/students/history', [StudentController::class, 'showHistory'])->name('students.history');
+// use App\Http\Controllers\StudentController;
+
+Route::get('/students/import', [StudentController::class, 'showImportForm'])->name('students.import.form');
+Route::post('/students/import', [StudentController::class, 'import'])->name('students.import');
+// use App\Http\Controllers\StudentController;
+
+// Route::get('students/import', [StudentController::class, 'showImportForm'])->name('students.import');
+// Route::post('students/upload', [StudentController::class, 'upload'])->name('students.upload');

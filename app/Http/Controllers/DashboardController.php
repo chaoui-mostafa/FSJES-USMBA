@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Laboratoire;
 use App\Models\Prof;
 use App\Models\Doctorant;
+use App\Models\User;
+use Illuminate\Http\Request;
+
 
 class DashboardController extends Controller
 {
@@ -13,7 +16,11 @@ class DashboardController extends Controller
         $stats = [
             'laboratoires' => Laboratoire::count(),
             'profs' => Prof::count(),
-            'doctorants' => Doctorant::count()
+            'doctorants' => Doctorant::count(),
+            'users' => User::count() // Add this line
+
+
+
         ];
 
         return view('dashboard', compact('stats'));
