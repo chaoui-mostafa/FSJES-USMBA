@@ -4,27 +4,154 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Upload;
+
 
 class Student extends Model
 {
-    use HasFactory;
+    // use HasFactory, SoftDeletes;
 
+    /**
+     * اسم الجدول في قاعدة البيانات
+     */
+    protected $table = 'students';
+
+    /**
+     * الحقول التي يمكن تعبئتها جماعياً (Mass Assignment)
+     */
     protected $fillable = [
+        'upload_id',
         'NUMERO',
         'CNE',
         'CIN',
         'NOM',
         'PRENOM',
-        'DATE_NAISSANCE',
+        'NOMAR',
+        'PRENOMAR',
+        'DATENAISSANCE',
+        'LIEUNAISSANCE',
+        'LIEUNAISSANCEAR',
+        'SEXE',
+        'FONCTIONNAIRE',
+        'BOURSE',
+        'PROMO',
+        'FORMATION',
+        'LABORATOIRE',
+        'IMAGE',
+        'SITUATION',
+        'THESE',
+        'ANNEESOUTENANCE',
+        'DATESOUTENANCE',
+        'REMARQUE',
+        'RAPPORTEUR1',
+        'Etat_Rapporteur1',
+        'DateDeDepotRapport1',
+        'RAPPORTEUR2',
+        'EtatRapporteur2',
+        'DateDeDepotRapport2',
+        'RAPPORTEUR3',
+        'EtatRapporteur3',
+        'DateDeDepotRapport3',
+        'JURY1',
+        'GRADE1',
+        'STATUS1',
+        'JURY2',
+        'GRADE2',
+        'STATUS2',
+        'JURY3',
+        'GRADE3',
+        'STATUS3',
+        'JURY4',
+        'GRADE4',
+        'STATUS4',
+        'JURY5',
+        'GRADE5',
+        'STATUS5',
+        'JURY6',
+        'GRADE6',
+        'STATUS6',
+        'JURY7',
+        'GRADE7',
+        'STATUS7',
+        'MENTIONFR',
+        'MENTIONAR',
         'NATIONALITE',
         'EMAIL',
         'TELEPHONE',
-        'SPECIALITE',
         'SUJET',
-        'ENCADREUR_1',
-        'ENCADREUR_2',
-        'PRESIDENT',
-        'RAPPORTEUR_INT',
-        'RAPPORTEUR_EXT',
+        'ENCADRANT',
+        'COENCADRANT',
+        'created_at',
+        'updated_at',
+        'deleted_at'
     ];
+
+    /**
+     * الحقول التي يتم تحويلها تلقائيًا لأنواع بيانات محددة
+     */
+    protected $casts = [
+        'DATENAISSANCE' => 'date',
+        'DATESOUTENANCE' => 'date',
+        'DateDeDepotRapport1' => 'date',
+        'DateDeDepotRapport2' => 'date',
+        'DateDeDepotRapport3' => 'date',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
+        'FONCTIONNAIRE' => 'boolean',
+        'BOURSE' => 'boolean',
+        'TELEPHONE' => 'string',
+    ];
+
+    /**
+     * العلاقة مع جدول الرفعات (Upload)
+     */
+    // public function upload()
+    // {
+    //     return $this->belongsTo(Upload::class, 'upload_id');
+    // }
+
+    /**
+     * نطاق البحث عن الطلاب حسب رقم الرفع
+     */
+    public function scopeByUpload($query, $uploadId)
+    {
+        return $query->where('upload_id', $uploadId);
+    }
+
+    /**
+     * نطاق البحث عن الطلاب الحاليين (أحدث رفع)
+     */
+    public function scopeCurrent($query)
+    {
+        return $query->where('upload_id', function($q) {
+            $q->selectRaw('MAX(upload_id)')
+              ->from('students');
+        });
+    }
+
+    /**
+     * مُعدّل لتحويل تاريخ الميلاد إلى صيغة مقروءة
+     */
+    public function getFormattedDateNaissanceAttribute()
+    {
+        return $this->DATENAISSANCE ? $this->DATENAISSANCE->format('d/m/Y') : 'غير محدد';
+    }
+
+    /**
+     * مُعدّل للحصول على الاسم الكامل بالفرنسية
+     */
+    public function getFullNameAttribute()
+    {
+        return trim($this->NOM . ' ' . $this->PRENOM);
+    }
+
+    /**
+     * مُعدّل للحصول على الاسم الكامل بالعربية
+     */
+    public function getFullNameArAttribute()
+    {
+        return trim($this->NOMAR . ' ' . $this->PRENOMAR);
+    }
 }

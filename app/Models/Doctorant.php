@@ -9,61 +9,156 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Doctorant extends Model
 {
-    use HasFactory, SoftDeletes;
+    protected $table = 'doctorants';
 
+    /**
+     * الحقول التي يمكن تعبئتها جماعياً (Mass Assignment)
+     */
     protected $fillable = [
-        'user_id',
-        'cne',
-        'cin',
-        'nom',
-        'prenom',
-        'nom_ar',
-        'prenom_ar',
-        'date_naissance',
-        'lieu_naissance',
-        'nationalite',
-        'sexe',
-        'fonctionnaire',
-        'bourse',
-        'formation',
-        'sujet',
-        'id_prof',
-        'id_laboratoire',
-        'date_soutenance',
-        'situation',
-        'these',
-        'mention'
+        'upload_id',
+        'NUMERO',
+        'CNE',
+        'CIN',
+        'NOM',
+        'PRENOM',
+        'NOMAR',
+        'PRENOMAR',
+        'DATENAISSANCE',
+        'LIEUNAISSANCE',
+        'LIEUNAISSANCEAR',
+        'SEXE',
+        'FONCTIONNAIRE',
+        'BOURSE',
+        'PROMO',
+        'FORMATION',
+        'LABORATOIRE',
+        'IMAGE',
+        'SITUATION',
+        'THESE',
+        'ANNEESOUTENANCE',
+        'DATESOUTENANCE',
+        'REMARQUE',
+        'RAPPORTEUR1',
+        'Etat_Rapporteur1',
+        'DateDeDepotRapport1',
+        'RAPPORTEUR2',
+        'EtatRapporteur2',
+        'DateDeDepotRapport2',
+        'RAPPORTEUR3',
+        'EtatRapporteur3',
+        'DateDeDepotRapport3',
+        'JURY1',
+        'GRADE1',
+        'STATUS1',
+        'JURY2',
+        'GRADE2',
+        'STATUS2',
+        'JURY3',
+        'GRADE3',
+        'STATUS3',
+        'JURY4',
+        'GRADE4',
+        'STATUS4',
+        'JURY5',
+        'GRADE5',
+        'STATUS5',
+        'JURY6',
+        'GRADE6',
+        'STATUS6',
+        'JURY7',
+        'GRADE7',
+        'STATUS7',
+        'MENTIONFR',
+        'MENTIONAR',
+        'NATIONALITE',
+        'EMAIL',
+        'TELEPHONE',
+        'SUJET',
+        'ENCADRANT',
+        'COENCADRANT',
+        'created_at',
+        'updated_at',
+        'deleted_at'
     ];
 
+    /**
+     * الحقول التي يتم تحويلها تلقائيًا لأنواع بيانات محددة
+     */
     protected $casts = [
-        'date_naissance' => 'date',
-        'date_soutenance' => 'date',
-        'fonctionnaire' => 'boolean',
+        'DATENAISSANCE' => 'date',
+        'DATESOUTENANCE' => 'date',
+        'DateDeDepotRapport1' => 'date',
+        'DateDeDepotRapport2' => 'date',
+        'DateDeDepotRapport3' => 'date',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
-        'sexe' => 'string',
+        'FONCTIONNAIRE' => 'boolean',
+        'BOURSE' => 'boolean',
+        'TELEPHONE' => 'string',
     ];
 
     /**
-     * Get the user that owns the doctorant
+     * العلاقة مع جدول الرفعات (Upload)
      */
-    public function user(): BelongsTo
+    // public function upload()
+    // {
+    //     return $this->belongsTo(Upload::class, 'upload_id');
+    // }
+
+    /**
+     * نطاق البحث عن الطلاب حسب رقم الرفع
+     */
+    public function scopeByUpload($query, $uploadId)
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $query->where('upload_id', $uploadId);
     }
 
     /**
-     * Get the prof (supervisor) for the doctorant
+     * نطاق البحث عن الطلاب الحاليين (أحدث رفع)
      */
-    public function prof(): BelongsTo
+    public function scopeCurrent($query)
     {
-        return $this->belongsTo(Prof::class, 'id_prof');
+        return $query->where('upload_id', function($q) {
+            $q->selectRaw('MAX(upload_id)')
+              ->from('students');
+        });
     }
 
     /**
-     * Get the laboratoire for the doctorant
+     * مُعدّل لتحويل تاريخ الميلاد إلى صيغة مقروءة
      */
-    public function laboratoire(): BelongsTo
+    public function getFormattedDateNaissanceAttribute()
     {
-        return $this->belongsTo(Laboratoire::class, 'id_laboratoire');
+        return $this->DATENAISSANCE ? $this->DATENAISSANCE->format('d/m/Y') : 'غير محدد';
     }
+
+    /**
+     * مُعدّل للحصول على الاسم الكامل بالفرنسية
+     */
+    public function getFullNameAttribute()
+    {
+        return trim($this->NOM . ' ' . $this->PRENOM);
+    }
+
+    /**
+     * مُعدّل للحصول على الاسم الكامل بالعربية
+     */
+    public function getFullNameArAttribute()
+    {
+        return trim($this->NOMAR . ' ' . $this->PRENOMAR);
+    }
+    public function prof()
+{
+    return $this->belongsTo(Prof::class);
+}
+    public function laboratoire()
+{
+    return $this->belongsTo(Laboratoire::class);
+}
+
+//     public function upload()
+// {
+//     return $this->belongsTo(Upload::class);
+// }
 }

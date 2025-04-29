@@ -1,61 +1,85 @@
 <?php
-// app/Http/Controllers/StudentController.php
 
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Imports\StudentImport;
-use App\Models\Student;
+use App\Exports\StudentsExport;
 use Maatwebsite\Excel\Facades\Excel;
-use Carbon\Carbon;
+use App\Models\Student;
 
 class StudentController extends Controller
 {
-    public function index()
+    // عرض جميع الطلاب مع إمكانية البحث
+    public function index(Request $request)
     {
-        // جلب آخر رفع (upload_id) للطلاب
-        $latestUploadId = Student::max('upload_id');
+        $query = Student::query();
 
-        // جلب الطلاب الذين يحملون نفس upload_id
-        $students = Student::where('upload_id', $latestUploadId)->paginate(10); // إضافة التصفح
+        if ($request->has('search')) {
+            $query->where('NOM', 'like', '%' . $request->search . '%')
+                  ->orWhere('CNE', 'like', '%' . $request->search . '%')
+                  ->orWhere('CIN', 'like', '%' . $request->search . '%');
+        }
 
-        // جلب جميع الطلاب في الترتيب العكسي حسب upload_id
-        $allStudents = Student::orderBy('upload_id', 'desc')->get();
-
-        return view('students.index', compact('students', 'allStudents')); // تمرير المتغيرات إلى العرض
+        $students = $query->paginate(10);
+        return view('students.index', compact('students'));
     }
 
+    // رفع ملف إكسل واستيراد البيانات
     public function upload(Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:xlsx,csv' // تأكد من أن الملف هو Excel أو CSV
+            'file' => 'required|mimes:xlsx,xls,csv|max:2048',
         ]);
 
-        // تعيين الـ upload_id استنادًا إلى الوقت الحالي
-        $uploadId = Carbon::now()->timestamp; // استخدام Carbon للحصول على timestamp الحالي
+        Excel::import(new StudentImport, $request->file('file'));
 
-        // استيراد البيانات من الملف إلى النموذج Student
-        Excel::import(new StudentImport($uploadId), $request->file('file'));
-
-        // إعادة التوجيه إلى صفحة الطلاب مع رسالة النجاح
-        return redirect()->route('students.index')->with('success', 'تم رفع الملف بنجاح.');
+        return redirect()->route('students.index')->with('success', 'تم استيراد الطلبة بنجاح.');
     }
 
-    public function showCurrent()
+    // عرض تفاصيل طالب
+    public function showDetails($id)
     {
-        // جلب آخر 50 طالب
-        $students = Student::latest()->take(50)->get();
-        return view('students.current', compact('students')); // عرض الطلاب
+        $student = Student::findOrFail($id);
+        return view('students.partials.details', compact('student'));
     }
 
-    public function showHistory()
+    // تعديل طالب
+    public function edit($id)
     {
-        // جلب كل الطلاب
-        $allStudents = Student::all();
-        return view('students.history', compact('allStudents')); // عرض جميع الطلاب
+        $student = Student::findOrFail($id);
+        return view('students.edit', compact('student'));
     }
-    public function showImportForm()
+
+    // تحديث بيانات طالب
+    public function update(Request $request, $id)
     {
-        return view('students.import');
+        $student = Student::findOrFail($id);
+        $student->update($request->all());
+
+        return redirect()->route('students.index')->with('success', 'تم تعديل بيانات الطالب بنجاح.');
     }
+
+    // حذف طالب
+    public function destroy($id)
+    {
+        $student = Student::findOrFail($id);
+        $student->delete();
+
+        return redirect()->route('students.index')->with('success', 'تم حذف الطالب بنجاح.');
+    }
+
+    // تصدير جميع بيانات الطلاب
+    // public function export()
+    // {
+    //     return Excel::download(new StudentsExport, 'students.xlsx');
+    // }
+    public function showHistory($id)
+{
+    $student = Student::findOrFail($id);
+    $history = $student->history; // أو أي علاقة / منطق خاص بالتاريخ
+
+    return view('students.history', compact('student', 'history'));
+}
+
 }

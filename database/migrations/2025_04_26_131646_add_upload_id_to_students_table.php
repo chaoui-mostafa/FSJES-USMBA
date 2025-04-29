@@ -12,7 +12,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('students', function (Blueprint $table) {
-            $table->integer('upload_id')->nullable()->after('sujet');
+            $table->bigInteger('upload_id')->nullable()->after('sujet');
         });
     }
 

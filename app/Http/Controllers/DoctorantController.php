@@ -6,36 +6,36 @@ use App\Models\Doctorant;
 use App\Models\Prof;
 use App\Models\Laboratoire;
 use Illuminate\Http\Request;
+use App\Imports\DoctorantsImport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DoctorantsExport;
+use Illuminate\Support\Facades\Storage;
 
 class DoctorantController extends Controller
 {
     public function index(Request $request)
-{
-    // البحث عبر الاسم، اللقب، أو CNE
-    $search = $request->get('search');
+    {
+        $search = $request->get('search');
 
-    // استعلام لعرض الطلبة مع تطبيق البحث إذا كان موجودًا
-    $doctorants = Doctorant::query()
-        ->when($search, function($query) use ($search) {
-            return $query->where('nom', 'like', '%' . $search . '%')
-                         ->orWhere('prenom', 'like', '%' . $search . '%')
-                         ->orWhere('cne', 'like', '%' . $search . '%')
-                         ->orWhere('cin', 'like', '%' . $search . '%')
-                            ->orWhere('nom_ar', 'like', '%' . $search . '%')
-                            ->orWhere('prenom_ar', 'like', '%' . $search . '%')
-                            ->orWhere('lieu_naissance', 'like', '%' . $search . '%')
-                            ->orWhere('nationalite', 'like', '%' . $search . '%')
-                            ->orWhere('sujet', 'like', '%' . $search . '%')
-                            ->orWhere('formation', 'like', '%' . $search . '%')
-                            ->orWhere('these', 'like', '%' . $search . '%');
+        $doctorants = Doctorant::query()
+            ->when($search, function($query) use ($search) {
+                return $query->where('NOM', 'like', '%' . $search . '%')
+                             ->orWhere('PRENOM', 'like', '%' . $search . '%')
+                             ->orWhere('CNE', 'like', '%' . $search . '%')
+                             ->orWhere('CIN', 'like', '%' . $search . '%')
+                             ->orWhere('NOMAR', 'like', '%' . $search . '%')
+                             ->orWhere('PRENOMAR', 'like', '%' . $search . '%')
+                             ->orWhere('LIEUNAISSANCE', 'like', '%' . $search . '%')
+                             ->orWhere('NATIONALITE', 'like', '%' . $search . '%')
+                             ->orWhere('SUJET', 'like', '%' . $search . '%')
+                             ->orWhere('FORMATION', 'like', '%' . $search . '%')
+                             ->orWhere('THESE', 'like', '%' . $search . '%');
+            })
+            // ->orderBy('NOM')
+            ->paginate(600);
 
-
-
-        })
-        ->paginate(550); // هنا نطبق الترقيم على كل صفحة تحتوي على 10 طلبة
-
-    return view('doctorants.index', compact('doctorants', 'search'));
-}
+        return view('doctorants.index', compact('doctorants', 'search'));
+    }
 
     public function create()
     {
@@ -47,40 +47,48 @@ class DoctorantController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'cne' => 'required|string|max:50|unique:doctorants',
-            'cin' => 'required|string|max:50|unique:doctorants',
-            'nom' => 'required|string|max:255',
-            'prenom' => 'required|string|max:255',
-            'nom_ar' => 'required|string|max:255',
-            'prenom_ar' => 'required|string|max:255',
-            'date_naissance' => 'required|date',
-            'lieu_naissance' => 'required|string|max:255',
-            'nationalite' => 'required|string|max:100',
-            'sexe' => 'required|in:M,F',
-            'fonctionnaire' => 'required|boolean',
-            'bourse' => 'required|string|max:100',
-            'formation' => 'required|string|max:255',
-            'sujet' => 'required|string',
-            'id_prof' => 'required|exists:profs,id_prof',
-            'id_laboratoire' => 'required|exists:laboratoires,id_laboratoire',
-            'date_soutenance' => 'nullable|date',
-            'situation' => 'required|string|max:100',
-            'these' => 'required|string|max:255',
-            'mention' => 'nullable|string|max:100',
+            'CNE' => 'required|string|max:50|unique:doctorants',
+            'CIN' => 'required|string|max:50|unique:doctorants',
+            'NOM' => 'required|string|max:255',
+            'PRENOM' => 'required|string|max:255',
+            'NOMAR' => 'required|string|max:255',
+            'PRENOM_AR' => 'required|string|max:255',
+            'DATE_NAISSANCE' => 'required|date',
+            'LIEU_NAISSANCE' => 'required|string|max:255',
+            'NATIONALITE' => 'required|string|max:100',
+            'SEXE' => 'required|in:M,F',
+            'FONCTIONNAIRE' => 'required|boolean',
+            'BOURSE' => 'required|string|max:100',
+            'FORMATION' => 'required|string|max:255',
+            'SUJET' => 'required|string',
+            'ENCADRANT' => 'required|string|max:255',
+            'LABORATOIRE' => 'required|string|max:255',
+            'DATE_SOUTENANCE' => 'nullable|date',
+            'SITUATION' => 'required|string|max:100',
+            'THESE' => 'required|string|max:255',
+            'MENTIONFR' => 'nullable|string|max:100',
+            'EMAIL' => 'required|email|unique:doctorants',
+            'TELEPHONE' => 'required|string|max:20',
+            'NUMERO' => 'nullable|string|max:50',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
+    
+        // إذا تم رفع صورة، خزّنها وأضف المسار للمصفوفة
+        if ($request->hasFile('photo')) {
+            $validated['photo'] = $request->file('photo')->store('doctorants_photos', 'public');
+        }
+    
         Doctorant::create($validated);
-
+    
         return redirect()->route('doctorants.index')
-                         ->with('success', 'Doctorant ajouté avec succès.');
+                         ->with('success', 'تم إضافة الطالب بنجاح.');
     }
+    
 
     public function show(Doctorant $doctorant)
     {
         return view('doctorants.show', compact('doctorant'));
     }
-
     public function edit(Doctorant $doctorant)
     {
         $profs = Prof::all();
@@ -91,30 +99,44 @@ class DoctorantController extends Controller
     public function update(Request $request, Doctorant $doctorant)
     {
         $validated = $request->validate([
-            'nom' => 'required|string|max:255',
-            'prenom' => 'required|string|max:255',
-            'nom_ar' => 'required|string|max:255',
-            'prenom_ar' => 'required|string|max:255',
-            'date_naissance' => 'required|date',
-            'lieu_naissance' => 'required|string|max:255',
-            'nationalite' => 'required|string|max:100',
-            'fonctionnaire' => 'required|boolean',
-            'bourse' => 'required|string|max:100',
-            'formation' => 'required|string|max:255',
-            'sujet' => 'required|string',
-            'id_prof' => 'required|exists:profs,id_prof',
-            'id_laboratoire' => 'required|exists:laboratoires,id_laboratoire',
-            'date_soutenance' => 'nullable|date',
-            'situation' => 'required|string|max:100',
-            'these' => 'required|string|max:255',
+            'NOM' => 'required|string|max:255',
+            'PRENOM' => 'required|string|max:255',
+            'NOMAR' => 'required|string|max:255',
+            'PRENOM_AR' => 'required|string|max:255',
+            'DATE_NAISSANCE' => 'required|date',
+            'LIEU_NAISSANCE' => 'required|string|max:255',
+            'NATIONALITE' => 'required|string|max:100',
+            'FONCTIONNAIRE' => 'required|boolean',
+            'BOURSE' => 'required|string|max:100',
+            'FORMATION' => 'required|string|max:255',
+            'SUJET' => 'required|string',
+            'ENCADRANT' => 'required|string|max:255',
+            'LABORATOIRE' => 'required|string|max:255',
+            'DATE_SOUTENANCE' => 'nullable|date',
+            'SITUATION' => 'required|string|max:100',
+            'THESE' => 'required|string|max:255',
+            'EMAIL' => 'required|email|unique:doctorants,EMAIL,' . $doctorant->id,
+            'TELEPHONE' => 'required|string|max:20',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
+    
+        // إذا تم رفع صورة جديدة
+        if ($request->hasFile('photo')) {
+            // حذف الصورة القديمة إن وجدت
+            if ($doctorant->photo) {
+                Storage::disk('public')->delete($doctorant->photo);
+            }
+    
+            // رفع الصورة الجديدة
+            $validated['photo'] = $request->file('photo')->store('doctorants_photos', 'public');
+        }
+    
         $doctorant->update($validated);
-
+    
         return redirect()->route('doctorants.index')
-                         ->with('success', 'Doctorant mis à jour avec succès.');
+                         ->with('success', 'تم تحديث بيانات الطالب بنجاح.');
     }
-
+    
     public function destroy(Doctorant $doctorant)
     {
         $doctorant->delete();
@@ -130,11 +152,54 @@ class DoctorantController extends Controller
     public function changeSupervisor(Request $request, Doctorant $doctorant)
     {
         $request->validate([
-            'new_prof_id' => 'required|exists:profs,id_prof'
+            'ENCADRANT' => 'required|string|max:255'
         ]);
 
-        $doctorant->update(['id_prof' => $request->new_prof_id]);
+        $doctorant->update(['ENCADRANT' => $request->ENCADRANT]);
 
         return back()->with('success', 'Directeur de thèse changé avec succès.');
     }
+
+    // Excel Import/Export Methods
+    public function importExportView()
+    {
+        return view('doctorants.import-export');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv,xls',
+        ]);
+    
+        // حذف كل البيانات القديمة
+        Doctorant::truncate();
+    
+        // استخدام Laravel Excel أو أي معالجة خاصة بك:
+        Excel::import(new DoctorantsImport, $request->file('file'));
+    
+        return redirect()->back()->with('success', 'تم استيراد البيانات بنجاح بعد حذف البيانات القديمة.');
+    }
+    
+
+    public function export()
+    {
+        return Excel::download(new DoctorantsExport, 'doctorants.xlsx');
+    }
+
+    public function downloadTemplate()
+    {
+        $filePath = public_path('templates/doctorants_template.xlsx');
+        return response()->download($filePath);
+    }
+    // public function import(Request $request)
+    // {
+    //     $request->validate([
+    //         'file' => 'required|mimes:xlsx,xls,csv'
+    //     ]);
+
+    //     Excel::import(new DoctorantsImport, $request->file('file'));
+
+    //     return redirect()->back()->with('success', 'تم الاستيراد بنجاح');
+    // }
 }

@@ -60,68 +60,35 @@
     <div class="bg-white shadow overflow-hidden sm:rounded-lg">
         <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
             <h3 class="text-lg leading-6 font-medium text-gray-900">Liste des Doctorants</h3>
-            <!-- <a href="{{ route('doctorants.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors">
+            <a href="{{ route('doctorants.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors">
                 Ajouter Doctorant
-            </a> -->
-            <livewire@custom-sql-query />
+            </a>
 
             <form method="GET" action="{{ route('doctorants.index') }}" class="flex items-center">
-                    <input type="text" name="search" value="{{ old('search', $search) }}" class="px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="ابحث عن طالب دكتوراه...">
-                    <button type="submit" class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none">بحث</button>
-                </form>
+                <input type="text" name="search" value="{{ old('search', $search) }}"
+                       class="px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                       placeholder="Rechercher...">
+                <button type="submit" class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none">
+                    Rechercher
+                </button>
+            </form>
         </div>
 
-        <!-- Search Filters -->
-        <div class="px-4 py-3 bg-gray-50 border-t border-gray-200">
-            <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
-                <div>
-                    <label for="search-cne" class="block text-xs font-medium text-gray-700">CNE</label>
-                    <input type="text" id="search-cne" placeholder="Rechercher par CNE..."
-                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-1 px-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm">
-                </div>
-                <div>
-                    <label for="search-nom" class="block text-xs font-medium text-gray-700">Nom</label>
-                    <input type="text" id="search-nom" placeholder="Rechercher par nom..."
-                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-1 px-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm">
-                </div>
-                <div>
-                    <label for="search-prenom" class="block text-xs font-medium text-gray-700">Prénom</label>
-                    <input type="text" id="search-prenom" placeholder="Rechercher par prénom..."
-                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-1 px-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm">
-                </div>
-                <div>
-                    <label for="search-directeur" class="block text-xs font-medium text-gray-700">Directeur</label>
-                    <input type="text" id="search-directeur" placeholder="Rechercher par directeur..."
-                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-1 px-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm">
-                </div>
-                <div>
-                    <label for="search-laboratoire" class="block text-xs font-medium text-gray-700">Laboratoire</label>
-                    <input type="text" id="search-laboratoire" placeholder="Rechercher par laboratoire..."
-                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-1 px-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm">
-                </div>
-                <div class="flex items-end">
-                    <button id="reset-search" class="bg-gray-200 text-gray-700 px-3 py-1 rounded-md text-sm hover:bg-gray-300 transition-colors">
-                        Réinitialiser
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Success/Error Messages -->
-        @if(session('success'))
-            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mx-6 my-4" role="alert">
+       <!-- Success/Error Messages -->
+       @if(session('success'))
+            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 my-4" role="alert">
                 <p>{{ session('success') }}</p>
             </div>
         @endif
 
         @if(session('error'))
-            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mx-6 my-4" role="alert">
+            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 my-4" role="alert">
                 <p>{{ session('error') }}</p>
             </div>
         @endif
 
         @if($errors->any())
-            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mx-6 my-4" role="alert">
+            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 my-4" role="alert">
                 <ul class="list-disc pl-5">
                     @foreach($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -130,26 +97,63 @@
             </div>
         @endif
 
-        <div class="border-t border-gray-200">
-            <table class="min-w-full divide-y divide-gray-200" id="doctorants-table">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CNE</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CIN</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prénom</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Directeur</th>
+                  
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Naissance</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lieu Naissance</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nationalité</th>
+                  
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Inscription</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Soutenance</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Année Soutenance</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Situation</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Thèse</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mention (FR)</th>
+   
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Formation</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Laboratoire</th>
+                  
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Encadrant</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Co-encadrant</th>
+
+                 
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Téléphone</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                     @foreach($doctorants as $doctorant)
-                    <tr class="doctorant-row">
-                        <td class="px-6 py-4 whitespace-nowrap cne">{{ $doctorant->cne }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap nom">{{ $doctorant->nom }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap prenom">{{ $doctorant->prenom }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap directeur">{{ $doctorant->prof->nom ?? 'N/A' }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap laboratoire">{{ $doctorant->laboratoire->nom ?? 'N/A' }}</td>
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->id }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->CNE }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->CIN }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->NOM }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->PRENOM }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->DATE_NAISSANCE }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->LIEU_NAISSANCE }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->NATIONALITE }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->DATE_INSCRIPTION }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->DATE_SOUTENANCE }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->ANNEE_SOUTENANCE }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->SITUATION }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->THESE }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->MENTIONFR }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->FORMATION }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->LABORATOIRE }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->ENCADRANT }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->COENCADRANT }}</td>
+
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->EMAIL }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->TELEPHONE }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <div class="flex space-x-2">
                                 <a href="{{ route('doctorants.show', $doctorant->id) }}"
@@ -185,18 +189,95 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
 
-            <!-- Pagination -->
-            <div class="px-4 py-3 bg-gray-50 border-t border-gray-200 sm:px-6">
-                {{ $doctorants->links() }}
+        <!-- Pagination -->
+        <div class="px-4 py-3 bg-gray-50 border-t border-gray-200 sm:px-6">
+            {{ $doctorants->links() }}
+        </div>
+    </div>
+</div>
+
+<!-- Detailed View Modal -->
+<div class="fixed inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true" id="doctorant-modal" style="display: none;">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Détails du Doctorant</h3>
+                <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4" id="doctorant-details">
+                    <!-- Details will be loaded here via AJAX -->
+                </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" id="close-modal">
+                    Fermer
+                </button>
             </div>
         </div>
     </div>
 </div>
+
 @endsection
 
 @push('scripts')
 <script>
+    // Function to show doctorant details in modal
+    function showDoctorantDetails(id) {
+        fetch(`/doctorants/${id}/details`)
+            .then(response => response.json())
+            .then(data => {
+                let detailsHtml = `
+                    <div class="col-span-2">
+                        <h4 class="font-medium">Informations Personnelles</h4>
+                        <div class="grid grid-cols-2 gap-4 mt-2">
+                            <div><span class="text-gray-500">CNE:</span> ${data.CNE}</div>
+                            <div><span class="text-gray-500">CIN:</span> ${data.CIN}</div>
+                            <div><span class="text-gray-500">Nom:</span> ${data.NOM}</div>
+                            <div><span class="text-gray-500">Prénom:</span> ${data.PRENOM}</div>
+                            <div><span class="text-gray-500">Nom (AR):</span> ${data.NOMAR}</div>
+                            <div><span class="text-gray-500">Prénom (AR):</span> ${data.PRENOM_AR}</div>
+                            <div><span class="text-gray-500">Date Naissance:</span> ${data.DATE_NAISSANCE}</div>
+                            <div><span class="text-gray-500">Lieu Naissance:</span> ${data.LIEU_NAISSANCE}</div>
+                            <div><span class="text-gray-500">Nationalité:</span> ${data.NATIONALITE}</div>
+                            <div><span class="text-gray-500">Sexe:</span> ${data.SEXE}</div>
+                            <div><span class="text-gray-500">Email:</span> ${data.EMAIL}</div>
+                            <div><span class="text-gray-500">Téléphone:</span> ${data.TELEPHONE}</div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-medium">Informations Académiques</h4>
+                        <div class="mt-2 space-y-2">
+                            <div><span class="text-gray-500">Formation:</span> ${data.FORMATION}</div>
+                            <div><span class="text-gray-500">Laboratoire:</span> ${data.LABORATOIRE}</div>
+                            <div><span class="text-gray-500">Sujet:</span> ${data.SUJET}</div>
+                            <div><span class="text-gray-500">Encadrant:</span> ${data.ENCADRANT}</div>
+                            <div><span class="text-gray-500">Co-encadrant:</span> ${data.COENCADRANT}</div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-medium">Soutenance</h4>
+                        <div class="mt-2 space-y-2">
+                            <div><span class="text-gray-500">Date Soutenance:</span> ${data.DATE_SOUTENANCE}</div>
+                            <div><span class="text-gray-500">Année Soutenance:</span> ${data.ANNEE_SOUTENANCE}</div>
+                            <div><span class="text-gray-500">Situation:</span> ${data.SITUATION}</div>
+                            <div><span class="text-gray-500">Thèse:</span> ${data.THESE}</div>
+                            <div><span class="text-gray-500">Mention (FR):</span> ${data.MENTIONFR}</div>
+                            <div><span class="text-gray-500">Mention (AR):</span> ${data.MENTIONAR}</div>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('doctorant-details').innerHTML = detailsHtml;
+                document.getElementById('doctorant-modal').style.display = 'block';
+            });
+    }
+
+    // Close modal
+    document.getElementById('close-modal').addEventListener('click', function() {
+        document.getElementById('doctorant-modal').style.display = 'none';
+    });
+
     // File input label update
     document.querySelector('input[type="file"]').addEventListener('change', function(e) {
         var fileName = e.target.files[0]?.name || 'Choisir fichier';
@@ -204,60 +285,6 @@
         if (nextSibling) {
             nextSibling.innerText = fileName;
         }
-    });
-
-    // Live search functionality
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchInputs = {
-            cne: document.getElementById('search-cne'),
-            nom: document.getElementById('search-nom'),
-            prenom: document.getElementById('search-prenom'),
-            directeur: document.getElementById('search-directeur'),
-            laboratoire: document.getElementById('search-laboratoire')
-        };
-
-        const resetButton = document.getElementById('reset-search');
-        const rows = document.querySelectorAll('.doctorant-row');
-
-        function filterRows() {
-            const filters = {
-                cne: searchInputs.cne.value.toLowerCase(),
-                nom: searchInputs.nom.value.toLowerCase(),
-                prenom: searchInputs.prenom.value.toLowerCase(),
-                directeur: searchInputs.directeur.value.toLowerCase(),
-                laboratoire: searchInputs.laboratoire.value.toLowerCase()
-            };
-
-            rows.forEach(row => {
-                const cne = row.querySelector('.cne').textContent.toLowerCase();
-                const nom = row.querySelector('.nom').textContent.toLowerCase();
-                const prenom = row.querySelector('.prenom').textContent.toLowerCase();
-                const directeur = row.querySelector('.directeur').textContent.toLowerCase();
-                const laboratoire = row.querySelector('.laboratoire').textContent.toLowerCase();
-
-                const matches =
-                    cne.includes(filters.cne) &&
-                    nom.includes(filters.nom) &&
-                    prenom.includes(filters.prenom) &&
-                    directeur.includes(filters.directeur) &&
-                    laboratoire.includes(filters.laboratoire);
-
-                row.style.display = matches ? '' : 'none';
-            });
-        }
-
-        // Add event listeners to all search inputs
-        Object.values(searchInputs).forEach(input => {
-            input.addEventListener('input', filterRows);
-        });
-
-        // Reset button functionality
-        resetButton.addEventListener('click', function() {
-            Object.values(searchInputs).forEach(input => {
-                input.value = '';
-            });
-            filterRows();
-        });
     });
 </script>
 @endpush

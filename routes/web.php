@@ -135,3 +135,5 @@ Route::post('/students/import', [StudentController::class, 'import'])->name('stu
 
 // Route::get('students/import', [StudentController::class, 'showImportForm'])->name('students.import');
 // Route::post('students/upload', [StudentController::class, 'upload'])->name('students.upload');
+Route::get('/doctorants/{doctorant}/details', [StudentController::class, 'showDetails'])
+     ->name('doctorants.details');
