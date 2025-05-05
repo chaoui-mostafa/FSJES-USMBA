@@ -1,89 +1,186 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-        <div class="px-4 py-5 sm:px-6">
-            <h3 class="text-lg font-medium leading-6 text-gray-900">Edit Professor</h3>
-            <p class="mt-1 max-w-2xl text-sm text-gray-500">Update professor information</p>
-        </div>
-        <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
-            <form action="{{ route('profs.update', $prof->id) }}" method="POST" class="divide-y divide-gray-200">
-                @csrf
-                @method('PUT')
-                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <label for="nom" class="block text-sm font-medium text-gray-700">Name (FR)</label>
-                    <div class="mt-1 sm:mt-0 sm:col-span-2">
-                        <input type="text" name="nom" id="nom" value="{{ old('nom', $prof->nom) }}" class="max-w-lg block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md">
-                        @error('nom') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+<div class="container mx-auto px-4 py-6">
+    <div class="bg-white shadow rounded-lg p-6">
+        <h1 class="text-2xl font-bold mb-6">Modifier le Professeur</h1>
+
+        <form action="{{ route('profs.update', $prof->id) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Personal Information -->
+                <div class="space-y-4">
+                    <h2 class="text-lg font-semibold border-b pb-2">Informations Personnelles</h2>
+
+                    <div>
+                        <label for="nom_prenom" class="block text-sm font-medium text-gray-700">Nom Complet (Français)</label>
+                        <input type="text" name="nom_prenom" id="nom_prenom" required
+                            value="{{ old('nom_prenom', $prof->nom_prenom) }}"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        @error('nom_prenom') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div>
+                        <label for="nom_prenom_arabe" class="block text-sm font-medium text-gray-700">الاسم الكامل (عربي)</label>
+                        <input type="text" name="nom_prenom_arabe" id="nom_prenom_arabe" required
+                            value="{{ old('nom_prenom_arabe', $prof->nom_prenom_arabe) }}"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-right" dir="rtl">
+                        @error('nom_prenom_arabe') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div>
+                        <label for="email_professionnel" class="block text-sm font-medium text-gray-700">Email Professionnel</label>
+                        <input type="email" name="email_professionnel" id="email_professionnel" required
+                            value="{{ old('email_professionnel', $prof->email_professionnel) }}"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        @error('email_professionnel') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div>
+                        <label for="numero_telephone" class="block text-sm font-medium text-gray-700">Téléphone</label>
+                        <input type="tel" name="numero_telephone" id="numero_telephone" required
+                            value="{{ old('numero_telephone', $prof->numero_telephone) }}"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        @error('numero_telephone') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Sexe</label>
+                        <div class="mt-1 space-x-4">
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="sexe" value="M" required
+                                    {{ old('sexe', $prof->sexe) == 'M' ? 'checked' : '' }}
+                                    class="text-blue-600 focus:ring-blue-500">
+                                <span class="ml-2">Masculin</span>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="sexe" value="F"
+                                    {{ old('sexe', $prof->sexe) == 'F' ? 'checked' : '' }}
+                                    class="text-blue-600 focus:ring-blue-500">
+                                <span class="ml-2">Féminin</span>
+                            </label>
+                        </div>
+                        @error('sexe') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div>
+                        <label for="genre" class="block text-sm font-medium text-gray-700">Genre</label>
+
+
+                        <input type="text" name="genre" id="genre" required
+                            value="{{ old('genre', $prof->genre) }}"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        @error('genre') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
-                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 bg-gray-50">
-                    <label for="nom_ar" class="block text-sm font-medium text-gray-700">Name (AR)</label>
-                    <div class="mt-1 sm:mt-0 sm:col-span-2">
-                        <input type="text" name="nom_ar" id="nom_ar" value="{{ old('nom_ar', $prof->nom_ar) }}" class="max-w-lg block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md">
-                        @error('nom_ar') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                    </div>
-                </div>
+                <!-- Professional Information -->
+                <div class="space-y-4">
+                    <h2 class="text-lg font-semibold border-b pb-2">Informations Professionnelles</h2>
 
-                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <label for="grade" class="block text-sm font-medium text-gray-700">Grade</label>
-                    <div class="mt-1 sm:mt-0 sm:col-span-2">
-                        <input type="text" name="grade" id="grade" value="{{ old('grade', $prof->grade) }}" class="max-w-lg block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md">
+                    <div>
+                        <label for="grade" class="block text-sm font-medium text-gray-700">Grade (FR)</label>
+                        <input type="text" name="grade" id="grade" required
+                            value="{{ old('grade', $prof->grade) }}"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                         @error('grade') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     </div>
-                </div>
 
-                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 bg-gray-50">
-                    <label for="etablissement" class="block text-sm font-medium text-gray-700">Institution</label>
-                    <div class="mt-1 sm:mt-0 sm:col-span-2">
-                        <input type="text" name="etablissement" id="etablissement" value="{{ old('etablissement', $prof->etablissement) }}" class="max-w-lg block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md">
-                        @error('etablissement') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    <div>
+                        <label for="grade_ar" class="block text-sm font-medium text-gray-700">الرتبة (AR)</label>
+                        <input type="text" name="grade_ar" id="grade_ar" required
+                            value="{{ old('grade_ar', $prof->grade_ar) }}"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-right" dir="rtl">
+                        @error('grade_ar') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     </div>
-                </div>
 
-                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <label for="departement" class="block text-sm font-medium text-gray-700">Department</label>
-                    <div class="mt-1 sm:mt-0 sm:col-span-2">
-                        <input type="text" name="departement" id="departement" value="{{ old('departement', $prof->departement) }}" class="max-w-lg block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md">
+                    <div>
+                        <label for="departement" class="block text-sm font-medium text-gray-700">Département (FR)</label>
+                        <input type="text" name="departement" id="departement" required
+                            value="{{ old('departement', $prof->departement) }}"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                         @error('departement') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     </div>
-                </div>
 
-                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 bg-gray-50">
-                    <label for="type" class="block text-sm font-medium text-gray-700">Type</label>
-                    <div class="mt-1 sm:mt-0 sm:col-span-2">
-                        <select name="type" id="type" class="max-w-lg block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md">
+                    <div>
+                        <label for="departement_ar" class="block text-sm font-medium text-gray-700">القسم (AR)</label>
+                        <input type="text" name="departement_ar" id="departement_ar" required
+                            value="{{ old('departement_ar', $prof->departement_ar) }}"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-right" dir="rtl">
+                        @error('departement_ar') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div>
+                        <label for="etablissement_fr" class="block text-sm font-medium text-gray-700">Établissement (FR)</label>
+                        <input type="text" name="etablissement_fr" id="etablissement_fr" required
+                            value="{{ old('etablissement_fr', $prof->etablissement_fr) }}"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        @error('etablissement_fr') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div>
+                        <label for="etablissement_ar" class="block text-sm font-medium text-gray-700">المؤسسة (AR)</label>
+                        <input type="text" name="etablissement_ar" id="etablissement_ar" required
+                            value="{{ old('etablissement_ar', $prof->etablissement_ar) }}"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-right" dir="rtl">
+                        @error('etablissement_ar') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div>
+                        <label for="type" class="block text-sm font-medium text-gray-700">Type</label>
+                        <select name="type" id="type" required
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="">Sélectionner un type</option>
                             <option value="Permanent" {{ old('type', $prof->type) == 'Permanent' ? 'selected' : '' }}>Permanent</option>
                             <option value="Visiting" {{ old('type', $prof->type) == 'Visiting' ? 'selected' : '' }}>Visiting</option>
                             <option value="Associate" {{ old('type', $prof->type) == 'Associate' ? 'selected' : '' }}>Associate</option>
                         </select>
                         @error('type') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     </div>
-                </div>
 
-                <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <label for="id_laboratoire" class="block text-sm font-medium text-gray-700">Laboratory</label>
-                    <div class="mt-1 sm:mt-0 sm:col-span-2">
-                        <select name="id_laboratoire" id="id_laboratoire" class="max-w-lg block w-full shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md">
+                    <div>
+                        <label for="status_ar" class="block text-sm font-medium text-gray-700">الحالة (AR)</label>
+                        <input type="text" name="status_ar" id="status_ar"
+                            value="{{ old('status_ar', $prof->status_ar) }}"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-right" dir="rtl">
+                        @error('status_ar') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div>
+                        <label for="id_laboratoire" class="block text-sm font-medium text-gray-700">Laboratoire</label>
+                        <select name="id_laboratoire" id="id_laboratoire"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="">Sélectionner un laboratoire</option>
                             @foreach($laboratoires as $laboratoire)
-                                <option value="{{ $laboratoire->id_laboratoire }}" {{ old('id_laboratoire', $prof->id_laboratoire) == $laboratoire->id_laboratoire ? 'selected' : '' }}>
-                                    {{ $laboratoire->nom }}
-                                </option>
+                            <option value="{{ $laboratoire->id }}" {{ old('id_laboratoire', $prof->id_laboratoire) == $laboratoire->id ? 'selected' : '' }}>
+                                {{ $laboratoire->nom }}
+                            </option>
                             @endforeach
                         </select>
                         @error('id_laboratoire') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     </div>
-                </div>
 
-                <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                    <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                        Update Professor
-                    </button>
+                    <div>
+                        <label for="grade" class="block text-sm font-medium text-gray-700">Doc</label>
+                        <input type="text" name="doc" id="doc" required
+                            value="{{ old('doc', $prof->doc) }}"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        @error('doc') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
                 </div>
-            </form>
-        </div>
+            </div>
+
+            <div class="mt-8 flex justify-end space-x-4">
+                <a href="{{ route('profs.index') }}" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                    Annuler
+                </a>
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                    Mettre à jour
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 @endsection

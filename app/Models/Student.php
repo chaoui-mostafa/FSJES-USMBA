@@ -154,4 +154,13 @@ class Student extends Model
     {
         return trim($this->NOMAR . ' ' . $this->PRENOMAR);
     }
+    public function laboratoire()
+{
+    return $this->belongsTo(Laboratoire::class, 'id_laboratoire');
+}
+public function prof()
+{
+    return $this->belongsTo(Prof::class, 'id_prof');
+}
+
 }

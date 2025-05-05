@@ -13,28 +13,21 @@ use Illuminate\Support\Facades\Storage;
 
 class DoctorantController extends Controller
 {
+
+
+
     public function index(Request $request)
     {
-        $search = $request->get('search');
+        $search = $request->input('search');
 
-        $doctorants = Doctorant::query()
-            ->when($search, function($query) use ($search) {
-                return $query->where('NOM', 'like', '%' . $search . '%')
-                             ->orWhere('PRENOM', 'like', '%' . $search . '%')
-                             ->orWhere('CNE', 'like', '%' . $search . '%')
-                             ->orWhere('CIN', 'like', '%' . $search . '%')
-                             ->orWhere('NOMAR', 'like', '%' . $search . '%')
-                             ->orWhere('PRENOMAR', 'like', '%' . $search . '%')
-                             ->orWhere('LIEUNAISSANCE', 'like', '%' . $search . '%')
-                             ->orWhere('NATIONALITE', 'like', '%' . $search . '%')
-                             ->orWhere('SUJET', 'like', '%' . $search . '%')
-                             ->orWhere('FORMATION', 'like', '%' . $search . '%')
-                             ->orWhere('THESE', 'like', '%' . $search . '%');
-            })
-            // ->orderBy('NOM')
-            ->paginate(600);
+        $doctorants = Doctorant::where('CNE', 'like', '%' . $search . '%')
+            ->orWhere('CIN', 'like', '%' . $search . '%')
+            ->orWhere('nom', 'like', '%' . $search . '%')
+            ->orWhere('prenom', 'like', '%' . $search . '%')
+            ->orWhere('encadrant', 'like', '%' . $search . '%')
+            ->paginate(10); // Pagination with 10 items per page
 
-        return view('doctorants.index', compact('doctorants', 'search'));
+        return view('doctorants.index', compact('doctorants'));
     }
 
     public function create()
@@ -72,18 +65,18 @@ class DoctorantController extends Controller
             'NUMERO' => 'nullable|string|max:50',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-    
+
         // إذا تم رفع صورة، خزّنها وأضف المسار للمصفوفة
         if ($request->hasFile('photo')) {
             $validated['photo'] = $request->file('photo')->store('doctorants_photos', 'public');
         }
-    
+
         Doctorant::create($validated);
-    
+
         return redirect()->route('doctorants.index')
                          ->with('success', 'تم إضافة الطالب بنجاح.');
     }
-    
+
 
     public function show(Doctorant $doctorant)
     {
@@ -119,24 +112,24 @@ class DoctorantController extends Controller
             'TELEPHONE' => 'required|string|max:20',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-    
+
         // إذا تم رفع صورة جديدة
         if ($request->hasFile('photo')) {
             // حذف الصورة القديمة إن وجدت
             if ($doctorant->photo) {
                 Storage::disk('public')->delete($doctorant->photo);
             }
-    
+
             // رفع الصورة الجديدة
             $validated['photo'] = $request->file('photo')->store('doctorants_photos', 'public');
         }
-    
+
         $doctorant->update($validated);
-    
+
         return redirect()->route('doctorants.index')
                          ->with('success', 'تم تحديث بيانات الطالب بنجاح.');
     }
-    
+
     public function destroy(Doctorant $doctorant)
     {
         $doctorant->delete();
@@ -171,16 +164,16 @@ class DoctorantController extends Controller
         $request->validate([
             'file' => 'required|mimes:xlsx,csv,xls',
         ]);
-    
+
         // حذف كل البيانات القديمة
         Doctorant::truncate();
-    
+
         // استخدام Laravel Excel أو أي معالجة خاصة بك:
         Excel::import(new DoctorantsImport, $request->file('file'));
-    
+
         return redirect()->back()->with('success', 'تم استيراد البيانات بنجاح بعد حذف البيانات القديمة.');
     }
-    
+
 
     public function export()
     {

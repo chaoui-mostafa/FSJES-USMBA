@@ -6,6 +6,7 @@ use App\Http\Controllers\LaboratoireController;
 use App\Http\Controllers\ProfController;
 use App\Http\Controllers\DoctorantController;
 use App\Http\Controllers\UserController;
+// use App\Http\Controllers\ProfController;
 
 
 /*
@@ -51,6 +52,7 @@ Route::get('laboratoires/{laboratoire}/members', [LaboratoireController::class, 
 |--------------------------------------------------------------------------
 */
 Route::resource('profs', ProfController::class);
+Route::get('/profes', [ProfController::class, 'index'])->name('profes.index');
 
 // Professor-specific routes
 Route::get('profs/{prof}/supervisions', [ProfController::class, 'supervisions'])
@@ -77,10 +79,10 @@ Route::get('doctorants/{doctorant}/documents', [DoctorantController::class, 'doc
 | API Routes (Optional)
 |--------------------------------------------------------------------------
 */
-Route::prefix('api')->group(function () {
-    Route::get('laboratoires', [LaboratoireController::class, 'apiIndex']);
-    Route::get('profs/search', [ProfController::class, 'search']);
-});
+// Route::prefix('api')->group(function () {
+//     Route::get('laboratoires', [LaboratoireController::class, 'apiIndex']);
+//     Route::get('profs/search', [ProfController::class, 'search']);
+// });
 
 // Import and Export routes for Doctorants
 Route::get('/doctorants/export', [DoctorantController::class, 'export'])->name('doctorants.export');
@@ -106,13 +108,14 @@ use Maatwebsite\Excel\Facades\Excel;
 Route::resource('users', UserController::class);
 //     ->except(['create', 'edit', 'update', 'destroy']);
 Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
-Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
+// Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
 Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 Route::get('users/{user}/reset-password', [UserController::class, 'resetPassword'])
     ->name('users.reset-password');
 // routes/web.php
 
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\DocumentController;
 
 // use App\Http\Controllers\StudentController;
 
@@ -137,3 +140,46 @@ Route::post('/students/import', [StudentController::class, 'import'])->name('stu
 // Route::post('students/upload', [StudentController::class, 'upload'])->name('students.upload');
 Route::get('/doctorants/{doctorant}/details', [StudentController::class, 'showDetails'])
      ->name('doctorants.details');
+Route::post('/professeurs/import', [ProfController::class, 'import'])->name('professeurs.import');
+// routes/web.php
+
+// use App\Http\Controllers\DocumentController;
+
+// Route::get('/document/create', [DocumentController::class, 'create']);
+// Route::post('/document', [DocumentController::class, 'store'])->name('documents.store');
+// use App\Http\Controllers\DocumentController;
+
+Route::get('/doctorants', function () {
+    $doctorants = \App\Models\Doctorant::all();
+    return view('doctorants.index', compact('doctorants'));
+})->name('doctorants.index');
+
+// Route::get('/documents/{id}/{type}', [DocumentController::class, 'generateDoctorantDocument'])
+    // ->name('documents.generate')
+    //  use App\Http\Controllers\DocumentController;
+
+    //  Route::get('/documents/download/{id}', [DocumentController::class, 'download'])->name('documents.download');
+    //  Route::get('/generate-word', [\App\Http\Controllers\WordExportController::class, 'export']);
+    use App\Http\Controllers\DoctorantWordExportController;
+
+    Route::get('/doctorant/{id}/export-word', [DoctorantWordExportController::class, 'export'])
+    ->name('doctorants.export-word');
+
+
+// routes/web.php
+Route::get('/doctorants/{doctorant}', [DoctorantController::class, 'show'])->name('doctorants.show');
+// route('documents.generate', [ 'type' => $documentType]);
+Route::get('/doctorants/{doctorant}/generate/{type}', [DoctorantController::class, 'generateDocument'])
+     ->name('doctorants.generate');
+// For importing professors
+// use App\Http\Controllers\DoctorantController;
+
+Route::get('/doctorants/export-word', [DoctorantController::class, 'exportWord'])->name('doctorants.export-word');
+// routes/web.php
+// Route::get('/generate-docx/{id}', [DocumentController::class, 'generateDocx']);
+// Route::get('/doctorants/{id}/export', [DoctorantWordExportController::class, 'export'])
+//     ->name('doctorants.export');
+// use App\Http\Controllers\DoctorantWordExportController;
+
+Route::get('/doctorant/{id}/annonce', [DoctorantWordExportController::class, 'showForm'])->name('doctorant.annonce.form');
+Route::post('/doctorant/annonce/generate', [DoctorantWordExportController::class, 'generate'])->name('doctorant.annonce.generate');

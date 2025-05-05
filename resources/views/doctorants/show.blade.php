@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+<x-sidebar-documents :doctorant="$doctorant" />
     <div class="bg-white shadow-xl rounded-xl overflow-hidden">
         <!-- En-tête avec photo et actions -->
         <div class="bg-gradient-to-r from-blue-600 to-indigo-700 px-6 py-8">
@@ -9,7 +10,7 @@
                 <!-- Photo -->
                 <div class="relative w-32 h-32 mb-4 md:mb-0 md:mr-6">
                     @if($doctorant->IMAGE)
-                        <img src="{{ asset('storage/' . $doctorant->IMAGE) }}" alt="Photo de profil" 
+                        <img src="{{ asset('storage/' . $doctorant->IMAGE) }}" alt="Photo de profil"
                              class="w-full h-full rounded-full object-cover border-4 border-white/30 shadow-md">
                     @else
                         <div class="w-full h-full rounded-full bg-white/20 flex items-center justify-center border-4 border-white/30 shadow-md">
@@ -41,7 +42,7 @@
                 </div>
 
                 <div class="flex space-x-2 mt-4 md:mt-0">
-                    <a href="{{ route('doctorants.edit', $doctorant->id) }}" 
+                    <a href="{{ route('doctorants.edit', $doctorant->id) }}"
                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-blue-700 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white transition-colors duration-200">
                         <svg class="-ml-1 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -51,7 +52,7 @@
                     <form action="{{ route('doctorants.destroy', $doctorant->id) }}" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" 
+                        <button type="submit"
                                 class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors duration-200"
                                 onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce doctorant ?')">
                             <svg class="-ml-1 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -308,5 +309,7 @@
             @endif
         </div>
     </div>
+    
 </div>
+
 @endsection

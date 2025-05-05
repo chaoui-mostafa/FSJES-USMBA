@@ -32,4 +32,10 @@ class Laboratoire extends Model
     // {
     //     return 'laboratoire';
     // }
+    public function professeurs()
+{
+    return $this->hasMany(Prof::class, 'id_laboratoire');
+}
+
+
 }

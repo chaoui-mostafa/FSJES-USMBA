@@ -9,9 +9,17 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class DoctorantsImport implements ToModel, WithHeadingRow
-{
-    public function model(array $row)
+{public function model(array $row)
     {
+        $row = array_map(function($item) {
+            return is_string($item) ? trim($item) : $item;
+        }, $row);
+
+        // تحقق إذا كانت القيم الأساسية موجودة، وإذا كانت فارغة، تجاهل الصف
+        if (empty($row['numero']) && empty($row['nom']) && empty($row['prenom'])) {
+            return null; // هذا سيمنع إضافة صف فارغ
+        }
+
         return new Doctorant([
             'NUMERO' => $row['numero'] ?? null,
             'CNE' => $row['cne'] ?? null,
@@ -20,6 +28,10 @@ class DoctorantsImport implements ToModel, WithHeadingRow
             'PRENOM' => $row['prenom'] ?? null,
             'EMAIL' => $row['email'] ?? null,
             'TELEPHONE' => isset($row['telephone']) ? (string) $row['telephone'] : null,
+            'NOMAR' => $row['nomar'] ?? null,
+            'PRENOMAR' => $row['prenomar'] ?? null,
+            'LIEUNAISSANCE' => $row['lieunaissance'] ?? null,
+            'LIEUNAISSANCEAR' => $row['lieunaissancear'] ?? null,
 
             'DATENAISSANCE' => $this->transformDate($row['datenaissance'] ?? null),
             'NATIONALITE' => $row['nationalite'] ?? null,
@@ -70,11 +82,10 @@ class DoctorantsImport implements ToModel, WithHeadingRow
 
             'MENTIONFR' => $row['mentionfr'] ?? null,
             'MENTIONAR' => $row['mentionar'] ?? null,
-            'LIEUNAISSANCE' => $row['lieunaissance'] ?? null,
-            'LIEUNAISSANCEAR' => $row['lieunaissancear'] ?? null,
-            
+
         ]);
     }
+
 
     private function transformDate($value)
     {
@@ -82,18 +93,32 @@ class DoctorantsImport implements ToModel, WithHeadingRow
             return null;
         }
 
+        $value = trim($value); // إزالة الفراغات الزائدة
+
         try {
-            // إذا كانت قيمة رقمية (صيغة Excel)، نحولها لتاريخ
+            // إذا كانت القيمة رقمية (تاريخ Excel)
             if (is_numeric($value)) {
                 return \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value);
             }
 
-            // إذا كانت على شكل نص
-            return Carbon::createFromFormat('d/m/Y', $value);
+            // قائمة بالتنسيقات المحتملة
+            $formats = ['Y-m-d', 'd/m/Y', 'm/d/Y', 'd-m-Y'];
+
+            foreach ($formats as $format) {
+                $date = Carbon::createFromFormat($format, $value);
+                if ($date && $date->format($format) === $value) {
+                    return $date;
+                }
+            }
+
+            // محاولة أخيرة باستخدام parse
+            return Carbon::parse($value);
+
         } catch (\Exception $e) {
             return null;
         }
     }
+
     private function transformBoolean($value)
 {
     return strtolower(trim($value)) === 'oui' ? 1 : 0;

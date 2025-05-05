@@ -11,20 +11,27 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // In the migration file
         Schema::create('profs', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->string('nom');
-            $table->string('nom_ar');
-            $table->string('grade', 100);
-            $table->string('etablissement');
-            $table->string('departement');
-            $table->string('type', 100);
-            $table->enum('sexe', ['M','F']);
-            $table->foreignId('id_laboratoire')->constrained('laboratoires');
-
-            $table->timestamps();
-        });
+                $table->id();
+                $table->string('nom_prenom');
+                $table->string('nom_prenom_arabe');
+                $table->string('email_professionnel')->nullable();
+                $table->string('numero_telephone')->nullable();
+                $table->string('grade');
+                $table->string('grade_ar');
+                $table->string('departement');
+                $table->string('departement_ar');
+                $table->string('etablissement_fr');
+                $table->string('etablissement_ar');
+                $table->string('type');
+                $table->string('sexe');
+                $table->string('doc')->nullable();
+                $table->string('prof')->nullable();
+                $table->string('genre')->nullable();
+                $table->string('status_ar');
+                $table->timestamps();
+});
     }
 
     /**

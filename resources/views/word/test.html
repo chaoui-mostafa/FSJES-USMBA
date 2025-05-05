@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>قائمة الوثائق</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .transition-transform {
+      transition: transform 0.3s ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+
+<!-- زر القائمة -->
+<button id="toggleSidebar" class="fixed top-4 right-4 z-50 bg-blue-600 text-white px-4 py-2 rounded shadow-lg">
+  القائمة
+</button>
+
+<!-- القائمة الجانبية -->
+<aside id="sidebar" class="fixed top-0 right-0 h-full w-64 bg-white shadow-lg transform translate-x-full transition-transform z-40 overflow-y-auto">
+  <div class="p-4 space-y-4">
+
+    <h2 class="text-xl font-bold mb-4 text-gray-800">تحميل الوثائق</h2>
+
+    <div class="grid grid-cols-1 gap-4">
+      <button class="bg-blue-100 hover:bg-blue-200 p-4 rounded-xl shadow text-blue-800 font-semibold text-center">بطاقة الطالب</button>
+      <button class="bg-green-100 hover:bg-green-200 p-4 rounded-xl shadow text-green-800 font-semibold text-center">شهادة التسجيل</button>
+      <button class="bg-yellow-100 hover:bg-yellow-200 p-4 rounded-xl shadow text-yellow-800 font-semibold text-center">كشف النقط</button>
+      <button class="bg-purple-100 hover:bg-purple-200 p-4 rounded-xl shadow text-purple-800 font-semibold text-center">شهادة الحضور</button>
+    </div>
+
+  </div>
+</aside>
+
+<script>
+  const sidebar = document.getElementById('sidebar');
+  const toggleButton = document.getElementById('toggleSidebar');
+
+  toggleButton.addEventListener('click', () => {
+    sidebar.classList.toggle('translate-x-full');
+  });
+
+  // إخفاء الشريط عند السحب لأسفل وظهوره عند السحب لأعلى
+  let lastScrollTop = 0;
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    if (scrollTop > lastScrollTop) {
+      // Scroll down
+      sidebar.classList.add('translate-x-full');
+    } else {
+      // Scroll up
+      sidebar.classList.remove('translate-x-full');
+    }
+    lastScrollTop = scrollTop;
+  });
+</script>
+
+</body>
+</html>

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Upload;
+
 
 class Doctorant extends Model
 {
@@ -149,16 +151,49 @@ class Doctorant extends Model
         return trim($this->NOMAR . ' ' . $this->PRENOMAR);
     }
     public function prof()
-{
-    return $this->belongsTo(Prof::class);
-}
+    {
+        return $this->belongsTo(Prof::class, 'id_prof');
+    }
     public function laboratoire()
-{
-    return $this->belongsTo(Laboratoire::class);
-}
+    {
+        return $this->belongsTo(Laboratoire::class, 'id_laboratoire', 'id');
+    }
+
 
 //     public function upload()
 // {
 //     return $this->belongsTo(Upload::class);
 // }
+public function jury1()
+{
+    return $this->belongsTo(Prof::class, 'JURY1', 'nom_prenom');
+}
+
+public function jury2()
+{
+    return $this->belongsTo(Prof::class, 'JURY2', 'nom_prenom');
+}
+
+public function jury3()
+{
+    return $this->belongsTo(Prof::class, 'JURY3', 'nom_prenom');
+}
+
+public function jury4()
+{
+    return $this->belongsTo(Prof::class, 'JURY4', 'nom_prenom');
+}
+public function jury5()
+{
+    return $this->belongsTo(Prof::class, 'JURY5', 'nom_prenom');
+
+}
+public function jury6()
+{
+    return $this->belongsTo(Prof::class, 'JURY6', 'nom_prenom');
+}
+public function jury7()
+{
+    return $this->belongsTo(Prof::class, 'JURY7', 'nom_prenom');
+}
 }

@@ -11,21 +11,30 @@ class Prof extends Model
 {
     use HasFactory;
 
-    //  protected $primaryKey = 'id_prof';
     protected $fillable = [
         'user_id',
-        'nom',
-        'nom_ar',
+        'nom_prenom',
+        'nom_prenom_arabe',
+        'email_professionnel',
+        'numero_telephone',
         'grade',
-        'etablissement',
+        'grade_ar',
         'departement',
+        'departement_ar',
+        'etablissement_fr',
+        'etablissement_ar',
         'type',
         'sexe',
+        'doc',
+        'prof',
+        'genre',
+        'status_ar',
         'id_laboratoire'
     ];
 
     protected $casts = [
         'sexe' => 'string',
+        'numero_telephone' => 'string',
     ];
 
     /**
@@ -39,10 +48,12 @@ class Prof extends Model
     /**
      * Get the laboratoire that owns the prof
      */
-    public function laboratoire(): BelongsTo
-    {
-        return $this->belongsTo(Laboratoire::class, 'id_laboratoire');
-    }
+  // داخل Prof.php
+  public function laboratoire()
+{
+    return $this->belongsTo(Laboratoire::class, 'id_laboratoire');
+}
+
 
     /**
      * Get all doctorants supervised by this prof
@@ -50,5 +61,31 @@ class Prof extends Model
     public function doctorants(): HasMany
     {
         return $this->hasMany(Doctorant::class, 'id_prof');
+    }
+
+    /**
+     * Get the prof's full name (French)
+     */
+    public function getFullNameAttribute(): string
+    {
+        return $this->nom_prenom;
+    }
+
+    /**
+     * Get the prof's full name (Arabic)
+     */
+    public function getFullNameArAttribute(): string
+    {
+        return $this->nom_prenom_arabe;
+    }
+
+    /**
+     * Scope a query to search professors
+     */
+    public function scopeSearch($query, $search)
+    {
+        return $query->where('nom_prenom', 'like', '%'.$search.'%')
+                    ->orWhere('nom_prenom_arabe', 'like', '%'.$search.'%')
+                    ->orWhere('email_professionnel', 'like', '%'.$search.'%');
     }
 }
