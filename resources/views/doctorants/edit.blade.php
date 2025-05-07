@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Modifier le Doctorant')
 
 @section('content')
 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
@@ -45,7 +46,7 @@
                         </svg>
                         Informations Personnelles
                     </h3>
-                    
+
                     <div class="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         <!-- NUMERO -->
                         <div>
@@ -159,7 +160,7 @@
                         </svg>
                         Informations Académiques
                     </h3>
-                    
+
                     <div class="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         <!-- FONCTIONNAIRE -->
                         <div class="flex items-start">
@@ -221,7 +222,7 @@
                         </svg>
                         Informations sur la Thèse
                     </h3>
-                    
+
                     <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                         <!-- THESE -->
                         <div class="md:col-span-2">
@@ -282,7 +283,7 @@
                         </svg>
                         Encadrants
                     </h3>
-                    
+
                     <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                         <!-- ENCADRANT -->
                         <div>
@@ -308,7 +309,7 @@
                         </svg>
                         Rapporteurs
                     </h3>
-                    
+
                     <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
                         @for($i = 1; $i <= 3; $i++)
                             @php
@@ -348,7 +349,7 @@
                         </svg>
                         Membres du Jury
                     </h3>
-                    
+
                     <div class="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         @for($i = 1; $i <= 7; $i++)
                             @php

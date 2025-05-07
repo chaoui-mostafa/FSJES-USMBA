@@ -4,10 +4,10 @@
             <!-- Logo and mobile menu button -->
             <div class="flex items-center">
                 <div class="flex-shrink-0">
-                    <a href="{{ route('dashboard') }}" class="text-xl font-bold text-blue-600 hover:text-blue-800 transition-colors duration-300">
+                    <a href="{{ route('dashboard') }}" class="text-xl font-bold text-blue-600 hover:text-blue-800 transition-colors duration-300 flex items-center">
+                        <img src="{{ asset('images/th.jpeg') }}" alt="Brand Logo" class="h-10 w-10 mr-2 max-w-full max-h-full object-contain">
                         FSJES Management
                     </a>
-                
                 </div>
 
                 <!-- Desktop Navigation -->
@@ -52,8 +52,8 @@
                     </svg>
                     Utilisateurs
                 </x-nav-link>
-                
-              
+
+
 
                 <!-- Profile dropdown -->
                 <div class="ml-3 relative" x-data="{ open: false }">
@@ -177,17 +177,17 @@
                 </div>
             </div>
             @endauth
-            
+
             <!-- Fullscreen Toggle for Mobile -->
             <div class="border-t border-gray-200 pt-4 pb-3">
                 <button @click="toggleFullscreen" class="w-full flex items-center px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               x-show="!isFullscreen"
                               d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               x-show="isFullscreen"
-                              d="M6 16v4m0 0h4m-4 0l5-5m5 5l-5-5m5 5v-4m0 4h-4" 
+                              d="M6 16v4m0 0h4m-4 0l5-5m5 5l-5-5m5 5v-4m0 4h-4"
                               style="display: none;" />
                     </svg>
                     <span x-text="isFullscreen ? 'Quitter le plein écran' : 'Plein écran'"></span>

@@ -1,4 +1,9 @@
 @extends('layouts.app')
+@section('Title','Ajouter un Professeur')
+
+
+@endsection
+
 
 @section('content')
 <div class="container mx-auto px-4 py-6">

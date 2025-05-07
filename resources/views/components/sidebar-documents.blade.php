@@ -166,14 +166,24 @@
         const toggleButton = document.getElementById('toggleSidebar');
 
         // Toggle sidebar
-        toggleButton.addEventListener('click', function() {
+        function toggleSidebar() {
             sidebar.classList.toggle('translate-x-full');
-        });
+        }
+
+        toggleButton.addEventListener('click', toggleSidebar);
 
         // Close sidebar when clicking outside
         document.addEventListener('click', function(event) {
             if (!sidebar.contains(event.target) && event.target !== toggleButton) {
                 sidebar.classList.add('translate-x-full');
+            }
+        });
+
+        // Keyboard shortcut (Ctrl+Shift+X)
+        document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey && event.shiftKey && event.key.toLowerCase() === 'x') {
+                event.preventDefault();
+                toggleSidebar();
             }
         });
     });

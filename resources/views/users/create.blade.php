@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Create New User')
 
 @section('content')
 <div class="py-6 px-4 sm:px-6 lg:px-8">
@@ -12,37 +13,37 @@
                 <div class="mb-4">
                     <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
                     <input type="text" name="name" id="name" required
-                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                 </div>
 
                 <div class="mb-4">
                     <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                     <input type="email" name="email" id="email" required
-                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                 </div>
 
                 <div class="mb-4">
                     <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
                     <input type="password" name="password" id="password" required
-                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                 </div>
 
                 <div class="mb-4">
                     <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirm Password</label>
                     <input type="password" name="password_confirmation" id="password_confirmation" required
-                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                 </div>
 
                 <div class="mb-4">
                     <label for="telephone" class="block text-sm font-medium text-gray-700">Telephone</label>
                     <input type="text" name="telephone" id="telephone"
-                           class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                 </div>
 
                 <div class="mb-4">
                     <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
                     <select name="role" id="role" required
-                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                         <option value="admin">Admin</option>
                         <option value="prof">Professor</option>
                         <option value="doctorant">Doctorant</option>
@@ -52,7 +53,7 @@
                 <div class="mb-4">
                     <label for="statut" class="block text-sm font-medium text-gray-700">Status</label>
                     <select name="statut" id="statut" required
-                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                         <option value="active">Active</option>
                         <option value="inactive">Inactive</option>
                     </select>

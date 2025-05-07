@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Ajouter un Nouveau Doctorant')
 
 @section('content')
 <div class="container mx-auto px-4 py-6">
