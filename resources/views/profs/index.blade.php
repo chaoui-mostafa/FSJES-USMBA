@@ -51,6 +51,55 @@
         </a>
     </div>
 
+    <!-- Pagination Controls (Top) -->
+    <div class="px-4 py-3 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+            <span class="text-sm text-gray-700">
+                Affichage de <span class="font-medium">{{ $profs->firstItem() }}</span> à <span class="font-medium">{{ $profs->lastItem() }}</span> sur <span class="font-medium">{{ $profs->total() }}</span> résultats
+            </span>
+        </div>
+        <div class="flex space-x-1">
+            <!-- First Page -->
+            <a href="{{ $profs->url(1) }}" class="px-3 py-1 rounded-md border border-gray-300 text-sm font-medium {{ $profs->onFirstPage() ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+                </svg>
+            </a>
+            
+            <!-- Previous Page -->
+            <a href="{{ $profs->previousPageUrl() }}" class="px-3 py-1 rounded-md border border-gray-300 text-sm font-medium {{ $profs->onFirstPage() ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </a>
+            
+            <!-- Page Numbers -->
+            @foreach(range(1, $profs->lastPage()) as $i)
+                @if($i == 1 || $i == $profs->lastPage() || abs($i - $profs->currentPage()) < 3)
+                    <a href="{{ $profs->url($i) }}" class="px-3 py-1 rounded-md border text-sm font-medium {{ $profs->currentPage() == $i ? 'bg-blue-500 text-white border-blue-500' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50' }}">
+                        {{ $i }}
+                    </a>
+                @elseif(abs($i - $profs->currentPage()) == 3)
+                    <span class="px-3 py-1 text-gray-500">...</span>
+                @endif
+            @endforeach
+            
+            <!-- Next Page -->
+            <a href="{{ $profs->nextPageUrl() }}" class="px-3 py-1 rounded-md border border-gray-300 text-sm font-medium {{ $profs->hasMorePages() ? 'bg-white text-gray-700 hover:bg-gray-50' : 'bg-gray-100 text-gray-400 cursor-not-allowed' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </a>
+            
+            <!-- Last Page -->
+            <a href="{{ $profs->url($profs->lastPage()) }}" class="px-3 py-1 rounded-md border border-gray-300 text-sm font-medium {{ $profs->currentPage() == $profs->lastPage() ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                </svg>
+            </a>
+        </div>
+    </div>
+
     <div class="px-4 py-3 bg-gray-50 border-t border-gray-200">
         <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4">
             <!-- Import Form -->
@@ -180,7 +229,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                                 </svg>
                             </a>
-                            <button onclick="openDeleteModal({{ $prof->id }}, '{{ addslashes($prof->nom_prenom) }}')"
+                            <button onclick="openDeleteModal({{ $prof->id }}, '{{ e($prof->nom_prenom) }}')"
                                     class="text-red-600 hover:text-red-900"
                                     title="Supprimer">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -193,6 +242,55 @@
                 @endforeach
             </tbody>
         </table>
+    </div>
+
+    <!-- Pagination Controls (Bottom) -->
+    <div class="px-4 py-3 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+            <span class="text-sm text-gray-700">
+                Affichage de <span class="font-medium">{{ $profs->firstItem() }}</span> à <span class="font-medium">{{ $profs->lastItem() }}</span> sur <span class="font-medium">{{ $profs->total() }}</span> résultats
+            </span>
+        </div>
+        <div class="flex space-x-1">
+            <!-- First Page -->
+            <a href="{{ $profs->url(1) }}" class="px-3 py-1 rounded-md border border-gray-300 text-sm font-medium {{ $profs->onFirstPage() ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+                </svg>
+            </a>
+            
+            <!-- Previous Page -->
+            <a href="{{ $profs->previousPageUrl() }}" class="px-3 py-1 rounded-md border border-gray-300 text-sm font-medium {{ $profs->onFirstPage() ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </a>
+            
+            <!-- Page Numbers -->
+            @foreach(range(1, $profs->lastPage()) as $i)
+                @if($i == 1 || $i == $profs->lastPage() || abs($i - $profs->currentPage()) < 3)
+                    <a href="{{ $profs->url($i) }}" class="px-3 py-1 rounded-md border text-sm font-medium {{ $profs->currentPage() == $i ? 'bg-blue-500 text-white border-blue-500' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50' }}">
+                        {{ $i }}
+                    </a>
+                @elseif(abs($i - $profs->currentPage()) == 3)
+                    <span class="px-3 py-1 text-gray-500">...</span>
+                @endif
+            @endforeach
+            
+            <!-- Next Page -->
+            <a href="{{ $profs->nextPageUrl() }}" class="px-3 py-1 rounded-md border border-gray-300 text-sm font-medium {{ $profs->hasMorePages() ? 'bg-white text-gray-700 hover:bg-gray-50' : 'bg-gray-100 text-gray-400 cursor-not-allowed' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </a>
+            
+            <!-- Last Page -->
+            <a href="{{ $profs->url($profs->lastPage()) }}" class="px-3 py-1 rounded-md border border-gray-300 text-sm font-medium {{ $profs->currentPage() == $profs->lastPage() ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50' }}">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                </svg>
+            </a>
+        </div>
     </div>
 </div>
 

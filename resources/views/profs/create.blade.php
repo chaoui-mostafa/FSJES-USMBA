@@ -2,7 +2,6 @@
 @section('Title','Ajouter un Professeur')
 
 
-@endsection
 
 
 @section('content')

@@ -1,9 +1,9 @@
 {{-- resources/views/components/toast.blade.php --}}
 @if(session('success') || session('error') || session('info') || session('warning'))
-    <div 
-        x-data="{ show: true }" 
-        x-show="show" 
-        x-init="setTimeout(() => show = false, 4000)" 
+    <div
+        x-data="{ show: true }"
+        x-show="show"
+        x-init="setTimeout(() => show = false, 7000)"
         x-transition:enter="transition ease-out duration-300 transform"
         x-transition:enter-start="opacity-0 translate-y-5"
         x-transition:enter-end="opacity-100 translate-y-0"
@@ -18,7 +18,7 @@
                     @elseif(session('info')) bg-blue-500
                     @elseif(session('warning')) bg-yellow-500 text-black
                     @endif">
-            
+
             <span>
                 {{ session('success') ?? session('error') ?? session('info') ?? session('warning') }}
             </span>

@@ -64,7 +64,7 @@
                 </div>
 
                <!-- Right side - Brand image with modern slider -->
-            <div class="hidden md:block md:w-1/2 bg-gradient-to-br from-red-500 to-indigo-600 relative overflow-hidden">
+            <div class="hidden md:block md:w-1/2 bg-gradient-to-br from-green-500 to-indigo-600 relative overflow-hidden">
                 <div id="slider" class="absolute inset-0 flex items-center justify-center p-8 text-white">
                     <!-- Slide 1 -->
                     <div class="slide absolute inset-0 flex flex-col items-center justify-center p-6 md:p-8 transition-all duration-1000 ease-[cubic-bezier(0.83,0,0.17,1)] transform translate-x-0 opacity-100">

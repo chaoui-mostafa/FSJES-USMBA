@@ -87,7 +87,54 @@
                 </form>
             </div>
 
+            <!-- Pagination Controls (Top) -->
+            <div class="px-4 py-3 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <span class="text-sm text-gray-700">
+                        Affichage de <span class="font-medium">{{ $doctorants->firstItem() }}</span> à <span class="font-medium">{{ $doctorants->lastItem() }}</span> sur <span class="font-medium">{{ $doctorants->total() }}</span> résultats
+                    </span>
+                </div>
+                <div class="flex space-x-1">
+                    <!-- First Page -->
+                    <a href="{{ $doctorants->url(1) }}" class="px-3 py-1 rounded-md border border-gray-300 text-sm font-medium {{ $doctorants->onFirstPage() ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+                        </svg>
+                    </a>
 
+                    <!-- Previous Page -->
+                    <a href="{{ $doctorants->previousPageUrl() }}" class="px-3 py-1 rounded-md border border-gray-300 text-sm font-medium {{ $doctorants->onFirstPage() ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </a>
+
+                    <!-- Page Numbers -->
+                    @foreach(range(1, $doctorants->lastPage()) as $i)
+                        @if($i == 1 || $i == $doctorants->lastPage() || abs($i - $doctorants->currentPage()) < 3)
+                            <a href="{{ $doctorants->url($i) }}" class="px-3 py-1 rounded-md border text-sm font-medium {{ $doctorants->currentPage() == $i ? 'bg-blue-500 text-white border-blue-500' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50' }}">
+                                {{ $i }}
+                            </a>
+                        @elseif(abs($i - $doctorants->currentPage()) == 3)
+                            <span class="px-3 py-1 text-gray-500">...</span>
+                        @endif
+                    @endforeach
+
+                    <!-- Next Page -->
+                    <a href="{{ $doctorants->nextPageUrl() }}" class="px-3 py-1 rounded-md border border-gray-300 text-sm font-medium {{ $doctorants->hasMorePages() ? 'bg-white text-gray-700 hover:bg-gray-50' : 'bg-gray-100 text-gray-400 cursor-not-allowed' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </a>
+
+                    <!-- Last Page -->
+                    <a href="{{ $doctorants->url($doctorants->lastPage()) }}" class="px-3 py-1 rounded-md border border-gray-300 text-sm font-medium {{ $doctorants->currentPage() == $doctorants->lastPage() ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
 
             <!-- Column-specific Search Filters -->
             <div class="px-4 py-3 bg-gray-50 border-t border-gray-200 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -124,7 +171,6 @@
             </div>
 
             <div class="overflow-x-auto">
-
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
@@ -132,7 +178,6 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CIN</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prénom</th>
-
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Soutenance</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Situation</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Formation</th>
@@ -152,10 +197,8 @@
                             <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->CIN }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->NOM }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->PRENOM }}</td>
-
                             <td class="px-6 py-4 whitespace-nowrap">{{ \Carbon\Carbon::parse($doctorant->DATESOUTENANCE)->format('Y-m-d') }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->SITUATION }}</td>
-
                             <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->FORMATION }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->ENCADRANT }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -168,13 +211,13 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                                         </svg>
                                     </a>
-                                    <a href="{{ route('doctorants.edit', $doctorant->id) }}"
+                                    <!-- <a href="{{ route('doctorants.edit', $doctorant->id) }}"
                                         class="text-green-600 hover:text-green-900"
                                         title="Modifier">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                                         </svg>
-                                    </a>
+                                    </a> -->
                                     <form action="{{ route('doctorants.destroy', $doctorant->id) }}" method="POST" class="inline">
                                         @csrf
                                         @method('DELETE')
@@ -190,18 +233,59 @@
                                 </div>
                             </td>
                         </tr>
-
                         @endforeach
-
                     </tbody>
-
-
                 </table>
-
-
             </div>
 
+            <!-- Pagination Controls (Bottom) -->
+            <div class="px-4 py-3 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <span class="text-sm text-gray-700">
+                        Affichage de <span class="font-medium">{{ $doctorants->firstItem() }}</span> à <span class="font-medium">{{ $doctorants->lastItem() }}</span> sur <span class="font-medium">{{ $doctorants->total() }}</span> résultats
+                    </span>
+                </div>
+                <div class="flex space-x-1">
+                    <!-- First Page -->
+                    <a href="{{ $doctorants->url(1) }}" class="px-3 py-1 rounded-md border border-gray-300 text-sm font-medium {{ $doctorants->onFirstPage() ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+                        </svg>
+                    </a>
 
+                    <!-- Previous Page -->
+                    <a href="{{ $doctorants->previousPageUrl() }}" class="px-3 py-1 rounded-md border border-gray-300 text-sm font-medium {{ $doctorants->onFirstPage() ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </a>
+
+                    <!-- Page Numbers -->
+                    @foreach(range(1, $doctorants->lastPage()) as $i)
+                        @if($i == 1 || $i == $doctorants->lastPage() || abs($i - $doctorants->currentPage()) < 3)
+                            <a href="{{ $doctorants->url($i) }}" class="px-3 py-1 rounded-md border text-sm font-medium {{ $doctorants->currentPage() == $i ? 'bg-blue-500 text-white border-blue-500' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50' }}">
+                                {{ $i }}
+                            </a>
+                        @elseif(abs($i - $doctorants->currentPage()) == 3)
+                            <span class="px-3 py-1 text-gray-500">...</span>
+                        @endif
+                    @endforeach
+
+                    <!-- Next Page -->
+                    <a href="{{ $doctorants->nextPageUrl() }}" class="px-3 py-1 rounded-md border border-gray-300 text-sm font-medium {{ $doctorants->hasMorePages() ? 'bg-white text-gray-700 hover:bg-gray-50' : 'bg-gray-100 text-gray-400 cursor-not-allowed' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </a>
+
+                    <!-- Last Page -->
+                    <a href="{{ $doctorants->url($doctorants->lastPage()) }}" class="px-3 py-1 rounded-md border border-gray-300 text-sm font-medium {{ $doctorants->currentPage() == $doctorants->lastPage() ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50' }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
     @push('scripts')

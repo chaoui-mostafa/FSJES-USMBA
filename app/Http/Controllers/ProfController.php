@@ -7,6 +7,7 @@ use App\Models\Laboratoire;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ProfesseurImport;
+use App\Imports\ProfesseursImport;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
@@ -27,12 +28,12 @@ class ProfController extends Controller
                                   ->orWhere('email_professionnel', 'like', '%'.$request->search.'%')
                                   ->orWhere('numero_telephone', 'like', '%'.$request->search.'%');
                         })
-                        ->limit(20)
+                        ->limit(1090)
                         ->get()
                 ]);
             }
 
-            $profs = Prof::with('laboratoire')->paginate(15);
+            $profs = Prof::with('laboratoire')->paginate(1090);
             return view('profs.index', compact('profs'));
 
         } catch (\Exception $e) {
@@ -201,30 +202,39 @@ class ProfController extends Controller
         }
     }
 
+    public function history()
+{
+    $profs = Prof::with('laboratoire')->where('is_new', false)->paginate(1090);
+    return view('profs.history', compact('profs'));
+}
+
     public function import(Request $request)
     {
         try {
             $request->validate([
                 'excel_file' => 'required|file|mimes:xlsx,xls,csv|max:10240'
             ]);
-
-            // Truncate existing data
-            Prof::truncate();
-
-            $import = new ProfesseurImport;
+    
+            // تحديث جميع البيانات السابقة كقديمة
+            Prof::query()->update(['is_new' => false]);
+            $import = new ProfesseursImport();
+            // $import = new ProfesseursImport ;
             Excel::import($import, $request->file('excel_file'));
-
+    
+            // بعد الاستيراد، جميع البيانات المستوردة تعتبر جديدة
+            Prof::whereNull('is_new')->update(['is_new' => true]);
+    
             $importedCount = $import->getRowCount();
             $errorCount = $import->getErrorCount();
-
+    
             if ($errorCount > 0) {
                 return back()
                     ->with('warning', "Importation partielle réussie: $importedCount enregistrements importés, $errorCount erreurs")
                     ->with('import_errors', $import->getErrors());
             }
-
+    
             return back()->with('success', "Importation réussie: $importedCount professeurs importés");
-
+    
         } catch (ExcelValidationException $e) {
             $failures = $e->failures();
             $errors = [];
@@ -241,4 +251,4 @@ class ProfController extends Controller
                 ->withInput();
         }
     }
-}
+};

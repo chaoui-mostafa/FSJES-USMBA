@@ -66,6 +66,7 @@ Route::middleware('auth')->group(function () {
     Route::post('profs/{prof}/assign-lab', [ProfController::class, 'assignLab'])->name('profs.assign-lab');
     Route::post('/professeurs/import', [ProfController::class, 'import'])->name('professeurs.import');
     Route::get('/profes', [ProfController::class, 'index'])->name('profes.index');
+  
 
     /*
     |------------------------------------------------------------------
@@ -112,3 +113,4 @@ Route::middleware('auth')->group(function () {
     Route::get('/doctorant/{id}/annonce', [DoctorantWordExportController::class, 'showForm'])->name('doctorant.annonce.form');
     Route::post('/doctorant/annonce/generate', [DoctorantWordExportController::class, 'generate'])->name('doctorant.annonce.generate');
 });
+

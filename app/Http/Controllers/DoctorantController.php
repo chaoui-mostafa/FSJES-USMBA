@@ -27,7 +27,11 @@ class DoctorantController extends Controller
                 ->orWhere('nom', 'like', '%' . $search . '%')
                 ->orWhere('prenom', 'like', '%' . $search . '%')
                 ->orWhere('encadrant', 'like', '%' . $search . '%')
-                ->paginate(10);
+                ->orWhere('nomar', 'like','%' . $search . '%')
+                ->orWhere('prenomar', 'like', '%' . $search . '%')
+                ->orWhere('sujet', 'like','%' . $search . '%')
+                ->orWhere('nationalite', 'like', '%' . $search . '%')
+                ->paginate(1090);
 
             return view('doctorants.index', compact('doctorants'));
 

@@ -40,26 +40,39 @@
         .loading-spinner {
             width: 50px;
             height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #3498db;
+            border: 5px solid greenyellow;
+            border-top: 5px solid blue;
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
     </style>
 </head>
 
-<body class="antialiased" x-data="fullscreen" @dblclick="toggleFullscreen">
+<body class="antialiased" x-data="fullscreen">
     <!-- Loading Overlay -->
     <div id="loading-overlay" class="loading-overlay">
         <img src="{{ asset('images/th.jpeg') }}" alt="Loading Logo" class="loading-logo">
@@ -67,7 +80,7 @@
         <p class="mt-4 text-gray-700 font-semibold">Loading FSJES...</p>
     </div>
 
-    <!-- ✅ غلاف الزر داخل x-data ليعمل Alpine -->
+    <!-- Fullscreen toggle button -->
     <div x-data="fullscreen" class="fixed left-0 top-1/4 transform -translate-y-1/2 z-50">
         <button @click="toggleFullscreen"
             class="bg-blue-600 text-white p-3 rounded-r-lg shadow-lg hover:bg-blue-700 transition-colors duration-300"
@@ -107,21 +120,38 @@
         document.addEventListener('alpine:init', () => {
             Alpine.data('fullscreen', () => ({
                 isFullscreen: false,
+                clickCount: 0,
+                clickTimeout: null,
 
                 toggleFullscreen() {
                     if (!document.fullscreenElement) {
                         document.documentElement.requestFullscreen?.().then(() => {
-                            localStorage.setItem('fullscreen', 'true'); // تخزين حالة الشاشة الكاملة
+                            localStorage.setItem('fullscreen', 'true');
                             this.isFullscreen = true;
                         }).catch(err => {
                             console.error(`Error enabling fullscreen: ${err.message}`);
                         });
                     } else {
                         document.exitFullscreen?.().then(() => {
-                            localStorage.setItem('fullscreen', 'false'); // تخزين حالة الخروج من الشاشة الكاملة
+                            localStorage.setItem('fullscreen', 'false');
                             this.isFullscreen = false;
                         });
                     }
+                },
+
+                handleClick() {
+                    this.clickCount++;
+
+                    if (this.clickTimeout) {
+                        clearTimeout(this.clickTimeout);
+                    }
+
+                    this.clickTimeout = setTimeout(() => {
+                        if (this.clickCount === 3) {
+                            this.toggleFullscreen();
+                        }
+                        this.clickCount = 0;
+                    }, 600); // 500ms window to register 4 clicks
                 },
 
                 checkFullscreen() {
@@ -135,21 +165,24 @@
                 init() {
                     this.checkFullscreen();
 
-                    // إذا كانت القيمة مخزنة في localStorage وأنت لست في fullscreen، قم بتفعيله
+                    // If fullscreen was enabled in localStorage and we're not in fullscreen, enable it
                     if (localStorage.getItem('fullscreen') === 'true' && !document.fullscreenElement) {
                         document.documentElement.requestFullscreen?.().then(() => {
                             this.isFullscreen = true;
                         });
                     }
 
+                    // Add event listeners for fullscreen changes
                     document.addEventListener('fullscreenchange', () => this.checkFullscreen());
                     document.addEventListener('webkitfullscreenchange', () => this.checkFullscreen());
                     document.addEventListener('msfullscreenchange', () => this.checkFullscreen());
+
+                    // Add click event listener to the body for 4-click detection
+                    document.body.addEventListener('click', () => this.handleClick());
                 }
             }));
         });
     </script>
-
 </body>
 
 </html>

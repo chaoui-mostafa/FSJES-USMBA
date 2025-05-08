@@ -102,8 +102,8 @@
                     </div>
                 </div>
                 @else
-                <a href="{{ route('login') }}" class="text-gray-600 hover:text-blue-600 transition-colors duration-300">Connexion</a>
-                <a href="" class="text-gray-600 hover:text-blue-600 transition-colors duration-300">Inscription</a>
+                <!-- <a href="{{ route('login') }}" class="text-gray-600 hover:text-blue-600 transition-colors duration-300">Connexion</a>
+                <a href="" class="text-gray-600 hover:text-blue-600 transition-colors duration-300">Inscription</a> -->
                 @endauth
             </div>
 
@@ -166,7 +166,7 @@
                 </div>
             </div>
             @else
-            <div class="border-t border-gray-200 pt-4 pb-3">
+            <!-- <div class="border-t border-gray-200 pt-4 pb-3">
                 <div class="space-y-1">
                     <a href="{{ route('login') }}" class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">
                         Connexion
@@ -175,10 +175,10 @@
                         Inscription
                     </a>
                 </div>
-            </div>
+            </div> -->
             @endauth
 
-            <!-- Fullscreen Toggle for Mobile -->
+            <!-- Fullscreen Toggle for Mobile
             <div class="border-t border-gray-200 pt-4 pb-3">
                 <button @click="toggleFullscreen" class="w-full flex items-center px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -192,7 +192,7 @@
                     </svg>
                     <span x-text="isFullscreen ? 'Quitter le plein écran' : 'Plein écran'"></span>
                 </button>
-            </div>
+            </div> -->
         </div>
     </div>
 </nav>
