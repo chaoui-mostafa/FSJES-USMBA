@@ -77,13 +77,13 @@
     <div id="loading-overlay" class="loading-overlay">
         <img src="{{ asset('images/th.jpeg') }}" alt="Loading Logo" class="loading-logo">
         <div class="loading-spinner"></div>
-        <p class="mt-4 text-gray-700 font-semibold">Loading FSJES...</p>
+        <p class="mt-4 text-blue-700- font-semibold">Loading FSJES...</p>
     </div>
 
     <!-- Fullscreen toggle button -->
     <div x-data="fullscreen" class="fixed left-0 top-1/4 transform -translate-y-1/2 z-50">
         <button @click="toggleFullscreen"
-            class="bg-blue-600 text-white p-3 rounded-r-lg shadow-lg hover:bg-blue-700 transition-colors duration-300"
+            class="bg-yellow-500 text-white p-3 rounded-r-lg shadow-lg hover:bg-blue-700 transition-colors duration-300"
             title="تبديل وضع الشاشة الكاملة">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">

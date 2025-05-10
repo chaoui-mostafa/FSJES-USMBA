@@ -51,6 +51,65 @@
         </a>
     </div>
 
+    
+    <div class="px-4 py-3 bg-gray-50 border-t border-gray-200">
+        <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4">
+            <!-- Import Form -->
+            <form action="{{ route('professeurs.import') }}" method="POST" enctype="multipart/form-data"
+                  class="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4 w-full md:w-auto">
+                @csrf
+                <div class="w-full sm:w-64">
+                    <label for="excel-file" class="sr-only">Importer depuis Excel</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                        </div>
+                        <input type="file" id="excel-file" name="excel_file" accept=".xlsx, .xls, .csv" required
+                               class="block w-full pl-10 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm">
+                    </div>
+                </div>
+                <button type="submit"
+                        class="w-full sm:w-auto bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors flex items-center justify-center space-x-2">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                    </svg>
+                    <span>Importer</span>
+                </button>
+            </form>
+
+            <!-- Template Download -->
+            <!-- <div class="flex space-x-4">
+                <a href="{{ asset('storage/templates/professeurs_template.xlsx') }}" download
+                   class="bg-blue-50 text-blue-700 hover:bg-blue-100 px-4 py-2 rounded-md transition-colors flex items-center space-x-2">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <span>Télécharger modèle</span>
+                </a> -->
+
+                <!-- Export Button -->
+                <!-- <a href=""
+                   class="bg-green-50 text-green-700 hover:bg-green-100 px-4 py-2 rounded-md transition-colors flex items-center space-x-2">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                    <span>Exporter</span>
+                </a>
+            </div>
+        </div> -->
+
+        <!-- File Requirements -->
+        <!-- <div class="mt-3 text-xs text-gray-500">
+            <p class="flex items-center">
+                <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Formats acceptés: .xlsx, .xls, .csv | Taille max: 800MB
+            </p>
+        </div> -->
+    </div>
     <!-- Pagination Controls (Top) -->
     <div class="px-4 py-3 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
         <div class="flex items-center space-x-2">
@@ -100,64 +159,6 @@
         </div>
     </div>
 
-    <div class="px-4 py-3 bg-gray-50 border-t border-gray-200">
-        <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4">
-            <!-- Import Form -->
-            <form action="{{ route('professeurs.import') }}" method="POST" enctype="multipart/form-data"
-                  class="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4 w-full md:w-auto">
-                @csrf
-                <div class="w-full sm:w-64">
-                    <label for="excel-file" class="sr-only">Importer depuis Excel</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                            </svg>
-                        </div>
-                        <input type="file" id="excel-file" name="excel_file" accept=".xlsx, .xls, .csv" required
-                               class="block w-full pl-10 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm">
-                    </div>
-                </div>
-                <button type="submit"
-                        class="w-full sm:w-auto bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors flex items-center justify-center space-x-2">
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-                    </svg>
-                    <span>Importer</span>
-                </button>
-            </form>
-
-            <!-- Template Download -->
-            <div class="flex space-x-4">
-                <a href="{{ asset('storage/templates/professeurs_template.xlsx') }}" download
-                   class="bg-blue-50 text-blue-700 hover:bg-blue-100 px-4 py-2 rounded-md transition-colors flex items-center space-x-2">
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                    </svg>
-                    <span>Télécharger modèle</span>
-                </a>
-
-                <!-- Export Button -->
-                <a href=""
-                   class="bg-green-50 text-green-700 hover:bg-green-100 px-4 py-2 rounded-md transition-colors flex items-center space-x-2">
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                    </svg>
-                    <span>Exporter</span>
-                </a>
-            </div>
-        </div>
-
-        <!-- File Requirements -->
-        <div class="mt-3 text-xs text-gray-500">
-            <p class="flex items-center">
-                <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                Formats acceptés: .xlsx, .xls, .csv | Taille max: 800MB
-            </p>
-        </div>
-    </div>
 
     <!-- Search Filters -->
     <div class="px-4 py-3 bg-gray-50 border-t border-gray-200">

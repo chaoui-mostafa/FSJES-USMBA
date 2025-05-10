@@ -187,12 +187,13 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         @foreach($doctorants as $doctorant)
-                        <tr class="doctorant-row"
+                        <tr class="doctorant-row cursor-pointer"
                             data-cne="{{ $doctorant->CNE }}"
                             data-cin="{{ $doctorant->CIN }}"
                             data-nom="{{ $doctorant->NOM }}"
                             data-prenom="{{ $doctorant->PRENOM }}"
-                            data-encadrant="{{ $doctorant->ENCADRANT }}">
+                            data-encadrant="{{ $doctorant->ENCADRANT }}"
+                            onclick="window.location='{{ route('doctorants.show', $doctorant->id) }}'">
                             <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->CNE }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->CIN }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $doctorant->NOM }}</td>
@@ -205,19 +206,13 @@
                                 <div class="flex space-x-2">
                                     <a href="{{ route('doctorants.show', $doctorant->id) }}"
                                         class="text-blue-600 hover:text-blue-900"
-                                        title="Voir détails">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        title="Voir détails"></a>
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"></svg></svg>
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                                         </svg>
+                                        
                                     </a>
-                                    <!-- <a href="{{ route('doctorants.edit', $doctorant->id) }}"
-                                        class="text-green-600 hover:text-green-900"
-                                        title="Modifier">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                        </svg>
-                                    </a> -->
                                     <form action="{{ route('doctorants.destroy', $doctorant->id) }}" method="POST" class="inline">
                                         @csrf
                                         @method('DELETE')

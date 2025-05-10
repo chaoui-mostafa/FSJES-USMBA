@@ -139,10 +139,11 @@
             <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
                 <h3 class="text-lg leading-6 font-medium text-gray-900">Activités Récentes</h3>
             </div>
-            <div class="px-4 py-5 sm:p-6">
+               <!-- Sample Activity Items -->
+            <!-- <div class="px-4 py-5 sm:p-6">
                 <div class="flow-root">
                     <ul class="-mb-8">
-                        <!-- Sample Activity Items -->
+                     
                         <li>
                             <div class="relative pb-8">
                                 <span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200" aria-hidden="true"></span>
@@ -231,8 +232,8 @@
                             </div>
                         </li>
                     </ul>
-                </div>
-            </div>
+                </div> -->
+            <!-- </div> -->
         </div>
 
         <!-- Quick Actions -->

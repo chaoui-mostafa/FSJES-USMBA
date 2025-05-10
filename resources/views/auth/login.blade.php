@@ -8,8 +8,8 @@
                 <!-- Left side - Login form -->
                 <div class="w-full md:w-1/2 p-10 space-y-6">
                     <div class="text-center">
-                        <h2 class="text-3xl font-bold text-gray-900">Bienvenue</h2>
-                        <p class="mt-2 text-sm text-gray-600">Veuillez vous connecter à votre compte</p>
+                        <h2 class="text-3xl font-bold text-lime-600">Bienvenue</h2>
+                        <p class="mt-2 text-sm text-blue-700">Veuillez vous connecter à votre compte</p>
                     </div>
 
                     <form class="space-y-6" action="{{ route('login') }}" method="POST">

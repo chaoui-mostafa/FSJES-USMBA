@@ -6,7 +6,7 @@
                 <div class="flex-shrink-0">
                     <a href="{{ route('dashboard') }}" class="text-xl font-bold text-blue-600 hover:text-blue-800 transition-colors duration-300 flex items-center">
                         <img src="{{ asset('images/th.jpeg') }}" alt="Brand Logo" class="h-10 w-10 mr-2 max-w-full max-h-full object-contain">
-                        FSJES Management
+                        <span class="font-bold text-lime-600">FSJES</span> <span class="text-gray-500">Gestion</span>
                     </a>
                 </div>
 
