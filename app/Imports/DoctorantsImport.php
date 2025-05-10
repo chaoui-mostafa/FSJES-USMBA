@@ -7,9 +7,13 @@ use App\Models\Student;
 use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\ShouldQueue;
+// use Maatwebsite\Excel\Concerns\ShouldQueue;
 
-class DoctorantsImport implements ToModel, WithHeadingRow
-{public function model(array $row)
+class DoctorantsImport implements ToModel, WithHeadingRow, WithChunkReading
+{
+public function model(array $row)
     {
         $row = array_map(function($item) {
             return is_string($item) ? trim($item) : $item;
@@ -123,5 +127,8 @@ class DoctorantsImport implements ToModel, WithHeadingRow
 {
     return strtolower(trim($value)) === 'oui' ? 1 : 0;
 }
-
+ public function chunkSize(): int
+    {
+        return 5000; // حجم chunk أكبر لمعالجة الملفات الكبيرة
+    }
 }

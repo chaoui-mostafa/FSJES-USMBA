@@ -4,13 +4,13 @@
 @section('content')
 <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
     <x-sidebar-documents :doctorant="$doctorant" />
-    
+
     <!-- Modern Profile Card -->
     <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-100">
         <!-- Profile Header with Gradient Background -->
         <div class="bg-gradient-to-r from-indigo-600 to-blue-700 px-8 py-10 relative">
             <!-- Floating action buttons -->
-            <div class="absolute top-4 right-4 flex space-x-2">
+            <!-- <div class="absolute top-4 right-4 flex space-x-2">
                 <a href="{{ route('doctorants.edit', $doctorant->id) }}"
                    class="inline-flex items-center px-4 py-2 bg-white/90 hover:bg-white text-indigo-700 rounded-lg shadow-sm transition-all duration-200 hover:shadow-md">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -30,8 +30,8 @@
                         Supprimer
                     </button>
                 </form>
-            </div>
-            
+            </div> -->
+
             <!-- Profile Content -->
             <div class="flex flex-col md:flex-row items-center">
                 <!-- Profile Picture with Ring -->
@@ -52,7 +52,7 @@
                 <div class="flex-1 text-center md:text-left">
                     <h1 class="text-3xl font-bold text-white">{{ $doctorant->NOM }} {{ $doctorant->PRENOM }}</h1>
                     <p class="text-blue-100 mt-2 text-lg">{{ $doctorant->THESE }}</p>
-                    
+
                     <!-- Badges -->
                     <div class="flex flex-wrap gap-3 mt-4 justify-center md:justify-start">
                         <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-white/20 text-white backdrop-blur-sm">
@@ -61,7 +61,7 @@
                             </svg>
                             {{ $doctorant->CNE }}
                         </span>
-                        
+
                         @if($doctorant->PROMO)
                         <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800">
                             <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -70,7 +70,7 @@
                             Promotion: {{ $doctorant->PROMO }}
                         </span>
                         @endif
-                        
+
                         @if($doctorant->MENTIONFR)
                         <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
                             <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -99,7 +99,7 @@
                         Doctorant
                     </span>
                 </div>
-                
+
                 <!-- Grid Layout -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <!-- Personal Info Cards -->
@@ -112,12 +112,12 @@
                         </div>
                         <div class="mt-1 text-base font-medium text-gray-800">{{ $doctorant->CIN ?? 'N/A' }}</div>
                     </div>
-                    
+
                     <div class="bg-gray-50/50 hover:bg-gray-50 p-4 rounded-xl border border-gray-200/50 transition-all duration-200">
                         <div class="text-sm font-medium text-gray-500">Nom complet (AR)</div>
                         <div class="mt-1 text-base font-medium text-gray-800">{{ $doctorant->NOMAR }} {{ $doctorant->PRENOMAR }}</div>
                     </div>
-                    
+
                     <div class="bg-gray-50/50 hover:bg-gray-50 p-4 rounded-xl border border-gray-200/50 transition-all duration-200">
                         <div class="text-sm font-medium text-gray-500 flex items-center">
                             <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -127,17 +127,17 @@
                         </div>
                         <div class="mt-1 text-base font-medium text-gray-800">{{ optional($doctorant->DATENAISSANCE)->format('d/m/Y') ?? 'N/A' }}</div>
                     </div>
-                    
+
                     <div class="bg-gray-50/50 hover:bg-gray-50 p-4 rounded-xl border border-gray-200/50 transition-all duration-200">
                         <div class="text-sm font-medium text-gray-500">Lieu de naissance</div>
                         <div class="mt-1 text-base font-medium text-gray-800">{{ $doctorant->LIEUNAISSANCE ?? 'N/A' }}</div>
                     </div>
-                    
+
                     <div class="bg-gray-50/50 hover:bg-gray-50 p-4 rounded-xl border border-gray-200/50 transition-all duration-200">
                         <div class="text-sm font-medium text-gray-500">Nationalité</div>
                         <div class="mt-1 text-base font-medium text-gray-800">{{ $doctorant->NATIONALITE ?? 'N/A' }}</div>
                     </div>
-                    
+
                     <div class="bg-gray-50/50 hover:bg-gray-50 p-4 rounded-xl border border-gray-200/50 transition-all duration-200">
                         <div class="text-sm font-medium text-gray-500">Sexe</div>
                         <div class="mt-1 text-base font-medium text-gray-800">
@@ -146,7 +146,7 @@
                             </span>
                         </div>
                     </div>
-                    
+
                     <div class="bg-gray-50/50 hover:bg-gray-50 p-4 rounded-xl border border-gray-200/50 transition-all duration-200">
                         <div class="text-sm font-medium text-gray-500 flex items-center">
                             <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -156,7 +156,7 @@
                         </div>
                         <div class="mt-1 text-base font-medium text-gray-800">{{ $doctorant->EMAIL ?? 'N/A' }}</div>
                     </div>
-                    
+
                     <div class="bg-gray-50/50 hover:bg-gray-50 p-4 rounded-xl border border-gray-200/50 transition-all duration-200">
                         <div class="text-sm font-medium text-gray-500 flex items-center">
                             <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -179,7 +179,7 @@
                     </svg>
                     Informations Académiques
                 </h3>
-                
+
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div class="bg-gray-50/50 hover:bg-gray-50 p-4 rounded-xl border border-gray-200/50 transition-all duration-200">
                         <div class="text-sm font-medium text-gray-500">Fonctionnaire</div>
@@ -189,7 +189,7 @@
                             </span>
                         </div>
                     </div>
-                    
+
                     <div class="bg-gray-50/50 hover:bg-gray-50 p-4 rounded-xl border border-gray-200/50 transition-all duration-200">
                         <div class="text-sm font-medium text-gray-500">Boursier</div>
                         <div class="mt-1">
@@ -198,17 +198,17 @@
                             </span>
                         </div>
                     </div>
-                    
+
                     <div class="bg-gray-50/50 hover:bg-gray-50 p-4 rounded-xl border border-gray-200/50 transition-all duration-200">
                         <div class="text-sm font-medium text-gray-500">Formation</div>
                         <div class="mt-1 text-base font-medium text-gray-800">{{ $doctorant->FORMATION ?? 'N/A' }}</div>
                     </div>
-                    
+
                     <div class="bg-gray-50/50 hover:bg-gray-50 p-4 rounded-xl border border-gray-200/50 transition-all duration-200">
                         <div class="text-sm font-medium text-gray-500">Laboratoire</div>
                         <div class="mt-1 text-base font-medium text-gray-800">{{ $doctorant->LABORATOIRE ?? 'N/A' }}</div>
                     </div>
-                    
+
                     <div class="bg-gray-50/50 hover:bg-gray-50 p-4 rounded-xl border border-gray-200/50 transition-all duration-200">
                         <div class="text-sm font-medium text-gray-500">Promotion</div>
                         <div class="mt-1 text-base font-medium text-gray-800">{{ $doctorant->PROMO ?? 'N/A' }}</div>
@@ -224,18 +224,18 @@
                     </svg>
                     Informations sur la Thèse
                 </h3>
-                
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="bg-gray-50/50 hover:bg-gray-50 p-4 rounded-xl border border-gray-200/50 transition-all duration-200">
                         <div class="text-sm font-medium text-gray-500">Titre de la thèse</div>
                         <div class="mt-1 text-base font-medium text-gray-800">{{ $doctorant->THESE ?? 'N/A' }}</div>
                     </div>
-                    
+
                     <div class="bg-gray-50/50 hover:bg-gray-50 p-4 rounded-xl border border-gray-200/50 transition-all duration-200">
                         <div class="text-sm font-medium text-gray-500">Sujet de la thèse</div>
                         <div class="mt-1 text-base font-medium text-gray-800">{{ $doctorant->SUJET ?? 'N/A' }}</div>
                     </div>
-                    
+
                     <div class="bg-gray-50/50 hover:bg-gray-50 p-4 rounded-xl border border-gray-200/50 transition-all duration-200">
                         <div class="text-sm font-medium text-gray-500">Date de soutenance</div>
                         <div class="mt-1 text-base font-medium text-gray-800">
@@ -249,17 +249,17 @@
                             @endif
                         </div>
                     </div>
-                    
+
                     <div class="bg-gray-50/50 hover:bg-gray-50 p-4 rounded-xl border border-gray-200/50 transition-all duration-200">
                         <div class="text-sm font-medium text-gray-500">Mention (FR)</div>
                         <div class="mt-1 text-base font-medium text-gray-800">{{ $doctorant->MENTIONFR ?? 'N/A' }}</div>
                     </div>
-                    
+
                     <div class="bg-gray-50/50 hover:bg-gray-50 p-4 rounded-xl border border-gray-200/50 transition-all duration-200">
                         <div class="text-sm font-medium text-gray-500">Mention (AR)</div>
                         <div class="mt-1 text-base font-medium text-gray-800">{{ $doctorant->MENTIONAR ?? 'N/A' }}</div>
                     </div>
-                    
+
                     <div class="bg-gray-50/50 hover:bg-gray-50 p-4 rounded-xl border border-gray-200/50 transition-all duration-200">
                         <div class="text-sm font-medium text-gray-500">Situation</div>
                         <div class="mt-1 text-base font-medium text-gray-800">{{ $doctorant->SITUATION ?? 'N/A' }}</div>
@@ -275,13 +275,13 @@
                     </svg>
                     Encadrants
                 </h3>
-                
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="bg-gray-50/50 hover:bg-gray-50 p-4 rounded-xl border border-gray-200/50 transition-all duration-200">
                         <div class="text-sm font-medium text-gray-500">Encadrant principal</div>
                         <div class="mt-1 text-base font-medium text-gray-800">{{ $doctorant->ENCADRANT ?? 'N/A' }}</div>
                     </div>
-                    
+
                     <div class="bg-gray-50/50 hover:bg-gray-50 p-4 rounded-xl border border-gray-200/50 transition-all duration-200">
                         <div class="text-sm font-medium text-gray-500">Co-encadrant</div>
                         <div class="mt-1 text-base font-medium text-gray-800">{{ $doctorant->COENCADRANT ?? 'N/A' }}</div>
@@ -298,7 +298,7 @@
                     </svg>
                     Membres du Jury
                 </h3>
-                
+
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     @for($i = 1; $i <= 7; $i++)
                         @php
@@ -334,7 +334,7 @@
                     </svg>
                     Rapporteurs
                 </h3>
-                
+
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     @for($i = 1; $i <= 3; $i++)
                         @php
@@ -370,7 +370,7 @@
                     </svg>
                     Remarques
                 </h3>
-                
+
                 <div class="bg-gray-50/50 p-5 rounded-xl border border-gray-200/50">
                     <p class="text-gray-700">{{ $doctorant->REMARQUE }}</p>
                 </div>
@@ -388,22 +388,22 @@
         transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         transition-duration: 150ms;
     }
-    
+
     /* Better shadow effects */
     .shadow-2xl {
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
     }
-    
+
     /* Improved rounded corners */
     .rounded-2xl {
         border-radius: 1rem;
     }
-    
+
     /* Subtle border effects */
     .border-gray-200/50 {
         border-color: rgba(229, 231, 235, 0.5);
     }
-    
+
     /* Better hover effects for cards */
     .hover\\:bg-gray-50:hover {
         background-color: rgba(249, 250, 251, 1);

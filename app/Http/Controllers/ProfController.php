@@ -72,8 +72,8 @@ class ProfController extends Controller
                 'etablissement_ar' => 'required|string|max:255',
                 'type' => 'required|string|max:255',
                 'status_ar' => 'nullable|string|max:255',
-                'id_laboratoire' => 'nullable|exists:laboratoires,id',
-                'doc' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+                // 'id_laboratoire' => 'nullable|exists:laboratoires,id',
+                // 'doc' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
             ]);
 
             if ($request->hasFile('doc')) {
@@ -214,27 +214,27 @@ class ProfController extends Controller
             $request->validate([
                 'excel_file' => 'required|file|mimes:xlsx,xls,csv|max:10240'
             ]);
-    
+
             // تحديث جميع البيانات السابقة كقديمة
             Prof::query()->update(['is_new' => false]);
             $import = new ProfesseursImport();
             // $import = new ProfesseursImport ;
             Excel::import($import, $request->file('excel_file'));
-    
+
             // بعد الاستيراد، جميع البيانات المستوردة تعتبر جديدة
             Prof::whereNull('is_new')->update(['is_new' => true]);
-    
+
             $importedCount = $import->getRowCount();
             $errorCount = $import->getErrorCount();
-    
+
             if ($errorCount > 0) {
                 return back()
                     ->with('warning', "Importation partielle réussie: $importedCount enregistrements importés, $errorCount erreurs")
                     ->with('import_errors', $import->getErrors());
             }
-    
+
             return back()->with('success', "Importation réussie: $importedCount professeurs importés");
-    
+
         } catch (ExcelValidationException $e) {
             $failures = $e->failures();
             $errors = [];

@@ -18,6 +18,7 @@ class DashboardController extends Controller
             'profs' => Prof::count(),
             'doctorants' => Doctorant::count(),
             'users' => User::count() // Add this line
+            
 
 
 
