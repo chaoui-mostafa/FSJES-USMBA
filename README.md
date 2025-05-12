@@ -36,13 +36,16 @@ php artisan key:generate
 ### 4. Database Setup
 
 ```bash
-php artisan migrate --seed
+php artisan migrate 
+php artisan db:seed --class=UserSeeder
 ```
 
 ### 5. Storage Linking
 
 ```bash
 php artisan storage:link
+
+mkdir -p public/annonces
 ```
 
 ### 6. Run the Development Server open 2 terminal 
@@ -55,6 +58,11 @@ npm run dev
 ### 7. Access the Application
 
 * Visit `http://localhost:8000` in your browser.
+ 
+### 8. LOGIN ADMIN
+
+* Email: `admin@gmail.com`
+* Password: `admin2025`
 
 ### Additional Commands
 

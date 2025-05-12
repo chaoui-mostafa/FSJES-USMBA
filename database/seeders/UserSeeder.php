@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
                 'name' => 'Admin User',
                 'email_verified_at' => now(),
                 'password' => Hash::make('admin2025'), // كلمة مرور مشفرة
-                'remember_token' => Str::random(10),
+                'remember_token' => Str::random(length: 10),
             ]
         );
 
