@@ -66,7 +66,7 @@ Route::middleware('auth')->group(function () {
     Route::post('profs/{prof}/assign-lab', [ProfController::class, 'assignLab'])->name('profs.assign-lab');
     Route::post('/professeurs/import', [ProfController::class, 'import'])->name('professeurs.import');
     Route::get('/profes', [ProfController::class, 'index'])->name('profes.index');
-  
+
 
     /*
     |------------------------------------------------------------------
@@ -90,6 +90,11 @@ Route::middleware('auth')->group(function () {
     Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
     Route::get('users/{user}/reset-password', [UserController::class, 'resetPassword'])->name('users.reset-password');
+// Blocage manuel
+Route::post('/users/{user}/block', [UserController::class, 'block'])->name('users.block');
+
+// Déblocage manuel
+Route::post('/users/{user}/unlock', [UserController::class, 'unlock'])->name('users.unlock');
 
     /*
     |------------------------------------------------------------------

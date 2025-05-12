@@ -72,7 +72,9 @@ return new class extends Migration
             $table->string('STATUS7')->nullable();
             $table->string('MENTIONFR')->nullable();
             $table->string('MENTIONAR')->nullable();
-            
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+
+
 
 
 

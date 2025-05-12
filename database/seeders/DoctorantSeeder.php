@@ -11,7 +11,7 @@ class DoctorantSeeder extends Seeder
 {
     public function run(): void
 {
-    \App\Models\Doctorant::factory(10000)->create();
+    // \App\Models\Doctorant::factory(10000)->create();
 
 
 }

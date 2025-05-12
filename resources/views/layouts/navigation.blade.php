@@ -117,8 +117,8 @@
                     </div>
                 </div>
                 @else
-                <a href="{{ route('login') }}" class="px-4 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 transition-colors">Connexion</a>
-                <a href="#" class="px-4 py-2 rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-sm">Inscription</a>
+                <!-- <a href="{{ route('login') }}" class="px-4 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 transition-colors">Connexion</a>
+                <a href="#" class="px-4 py-2 rounded-md text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-sm">Inscription</a> -->
                 @endauth
             </div>
 
@@ -216,14 +216,14 @@
             </div>
         </div>
         @else
-        <div class="border-t border-gray-200 pt-4 pb-3 bg-white px-4 space-y-2">
+        <!-- <div class="border-t border-gray-200 pt-4 pb-3 bg-white px-4 space-y-2">
             <a href="{{ route('login') }}" class="block w-full px-4 py-2 text-center rounded-md text-base font-medium text-blue-600 hover:text-blue-800 hover:bg-blue-50 transition-colors">
                 Connexion
             </a>
             <a href="#" class="block w-full px-4 py-2 text-center rounded-md text-base font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-sm">
                 Inscription
             </a>
-        </div>
+        </div> -->
         @endauth
     </div>
 </nav>

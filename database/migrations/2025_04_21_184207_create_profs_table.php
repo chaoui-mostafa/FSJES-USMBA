@@ -31,6 +31,8 @@ return new class extends Migration
                 $table->string('genre')->nullable();
                 $table->string('status_ar');
                 $table->timestamps();
+                $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+
 });
     }
 
