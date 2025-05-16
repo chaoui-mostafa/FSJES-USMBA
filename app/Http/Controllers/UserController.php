@@ -214,6 +214,8 @@ class UserController extends Controller
 
     return back()->with('success', 'Le compte a été bloqué avec succès.');
 }
+// Removed the method from UserController as it belongs to the User model
+
 
 // Duplicate unlock method removed to avoid redeclaration error.
 }

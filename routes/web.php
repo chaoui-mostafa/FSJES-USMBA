@@ -12,6 +12,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DoctorantWordExportController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |------------------------------------------------------------------
@@ -95,6 +96,12 @@ Route::post('/users/{user}/block', [UserController::class, 'block'])->name('user
 
 // Déblocage manuel
 Route::post('/users/{user}/unlock', [UserController::class, 'unlock'])->name('users.unlock');
+// web.php
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
+
 
     /*
     |------------------------------------------------------------------
@@ -119,3 +126,13 @@ Route::post('/users/{user}/unlock', [UserController::class, 'unlock'])->name('us
     Route::post('/doctorant/annonce/generate', [DoctorantWordExportController::class, 'generate'])->name('doctorant.annonce.generate');
 });
 
+// routes/web.php
+
+use App\Http\Controllers\ProfileSettingsController;
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile/settings', [ProfileSettingsController::class, 'index'])->name('profile.settings');
+    Route::post('/profile/settings', [ProfileSettingsController::class, 'update'])->name('profile.settings.update');
+    Route::post('/profile/settings/delete', [ProfileSettingsController::class, 'deleteAccount'])->name('profile.settings.delete');
+    Route::post('/profile/settings/change-password', [ProfileSettingsController::class, 'changePassword'])->name('profile.settings.change-password');
+});

@@ -4,15 +4,15 @@
 @section('content')
     <div class="container mx-auto px-2 sm:px-4 py-4 sm:py-6">
         <!-- Excel Operations Card -->
-        <div class="bg-white shadow rounded-lg mb-4 sm:mb-6">
-            <div class="px-4 sm:px-6 py-3 border-b border-gray-200">
-                <h3 class="text-lg font-medium text-gray-900">Opérations Excel</h3>
+        <div class="bg-white dark:bg-gray-800 shadow rounded-lg mb-4 sm:mb-6">
+            <div class="px-4 sm:px-6 py-3 border-b border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-medium text-gray-900 dark:text-white">Opérations Excel</h3>
             </div>
             <div class="px-4 sm:px-6 py-3">
                 <div class="flex flex-col sm:flex-row flex-wrap items-center justify-between gap-3">
                     <!-- Export Button -->
                     <a href="{{ route('doctorants.export') }}"
-                        class="flex items-center px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm sm:text-base w-full sm:w-auto justify-center">
+                        class="flex items-center px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors text-sm sm:text-base w-full sm:w-auto justify-center">
                         <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                         </svg>
@@ -21,7 +21,7 @@
 
                     <!-- Download Template -->
                     <a href="{{ route('doctorants.template') }}"
-                        class="flex items-center px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm sm:text-base w-full sm:w-auto justify-center">
+                        class="flex items-center px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors text-sm sm:text-base w-full sm:w-auto justify-center">
                         <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                         </svg>
@@ -36,16 +36,16 @@
                                 <label class="block">
                                     <span class="sr-only">Choisir fichier Excel</span>
                                     <input type="file" name="file" required accept=".xlsx,.xls"
-                                        class="block w-full text-xs sm:text-sm text-gray-500
+                                        class="block w-full text-xs sm:text-sm text-gray-500 dark:text-gray-400
                                                   file:mr-2 file:py-1 sm:file:py-2 file:px-2 sm:file:px-4
                                                   file:rounded-md file:border-0
                                                   file:font-medium
-                                                  file:bg-gray-100 file:text-gray-700
-                                                  hover:file:bg-gray-200">
+                                                  file:bg-gray-100 dark:file:bg-gray-700 file:text-gray-700 dark:file:text-gray-300
+                                                  hover:file:bg-gray-200 dark:hover:file:bg-gray-600">
                                 </label>
                             </div>
                             <button type="submit"
-                                class="flex items-center px-3 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors text-sm sm:text-base w-full sm:w-auto justify-center">
+                                class="flex items-center px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md transition-colors text-sm sm:text-base w-full sm:w-auto justify-center">
                                 <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                                 </svg>
@@ -58,9 +58,9 @@
         </div>
 
         <!-- Doctorants List -->
-        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="bg-white dark:bg-gray-800 shadow overflow-hidden sm:rounded-lg">
             <div class="px-3 sm:px-4 py-3 sm:py-5 flex flex-col sm:flex-row justify-between items-start gap-3">
-                <h3 class="text-base sm:text-lg leading-6 font-medium text-gray-900">Liste des Doctorants</h3>
+                <h3 class="text-base sm:text-lg leading-6 font-medium text-gray-900 dark:text-white">Liste des Doctorants</h3>
 
                 <!-- Global Search Form -->
                 <form method="GET" action="{{ route('doctorants.index') }}" class="w-full sm:w-auto">
@@ -72,15 +72,15 @@
                                 </svg>
                             </div>
                             <input type="text" name="search" value="{{ request('search') }}"
-                                   class="pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 block w-full text-sm"
+                                   class="pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-indigo-500 focus:border-indigo-500 block w-full text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                    placeholder="Recherche globale">
                         </div>
                         <div class="flex gap-2">
-                            <button type="submit" class="px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none text-sm">
+                            <button type="submit" class="px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md focus:outline-none text-sm">
                                 Rechercher
                             </button>
                             @if(request()->has('search'))
-                                <a href="{{ route('doctorants.index') }}" class="px-3 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none text-sm">
+                                <a href="{{ route('doctorants.index') }}" class="px-3 py-2 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-300 rounded-md focus:outline-none text-sm">
                                     Réinitialiser
                                 </a>
                             @endif
@@ -90,22 +90,22 @@
             </div>
 
              <!-- Pagination Controls (Top) -->
-            <div class="px-4 py-3 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
+            <div class="px-4 py-3 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600 flex items-center justify-between">
                 <div class="flex items-center space-x-2">
-                    <span class="text-sm text-gray-700">
+                    <span class="text-sm text-gray-700 dark:text-gray-300">
                         Affichage de <span class="font-medium">{{ $doctorants->firstItem() }}</span> à <span class="font-medium">{{ $doctorants->lastItem() }}</span> sur <span class="font-medium">{{ $doctorants->total() }}</span>
                     </span>
                 </div>
                 <div class="flex space-x-1">
                     <!-- First Page -->
-                    <a href="{{ $doctorants->url(1) }}" class="px-3 py-1 rounded-md border border-gray-300 text-sm font-medium {{ $doctorants->onFirstPage() ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50' }}">
+                    <a href="{{ $doctorants->url(1) }}" class="px-3 py-1 rounded-md border border-gray-300 dark:border-gray-600 text-sm font-medium {{ $doctorants->onFirstPage() ? 'bg-gray-100 dark:bg-gray-600 text-gray-400 dark:text-gray-300 cursor-not-allowed' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
                         </svg>
                     </a>
 
                     <!-- Previous Page -->
-                    <a href="{{ $doctorants->previousPageUrl() }}" class="px-3 py-1 rounded-md border border-gray-300 text-sm font-medium {{ $doctorants->onFirstPage() ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50' }}">
+                    <a href="{{ $doctorants->previousPageUrl() }}" class="px-3 py-1 rounded-md border border-gray-300 dark:border-gray-600 text-sm font-medium {{ $doctorants->onFirstPage() ? 'bg-gray-100 dark:bg-gray-600 text-gray-400 dark:text-gray-300 cursor-not-allowed' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                         </svg>
@@ -114,23 +114,23 @@
                     <!-- Page Numbers -->
                     @foreach(range(1, $doctorants->lastPage()) as $i)
                         @if($i == 1 || $i == $doctorants->lastPage() || abs($i - $doctorants->currentPage()) < 3)
-                            <a href="{{ $doctorants->url($i) }}" class="px-3 py-1 rounded-md border text-sm font-medium {{ $doctorants->currentPage() == $i ? 'bg-blue-500 text-white border-blue-500' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50' }}">
+                            <a href="{{ $doctorants->url($i) }}" class="px-3 py-1 rounded-md border text-sm font-medium {{ $doctorants->currentPage() == $i ? 'bg-blue-500 text-white border-blue-500' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700' }}">
                                 {{ $i }}
                             </a>
                         @elseif(abs($i - $doctorants->currentPage()) == 3)
-                            <span class="px-3 py-1 text-gray-500">...</span>
+                            <span class="px-3 py-1 text-gray-500 dark:text-gray-400">...</span>
                         @endif
                     @endforeach
 
                     <!-- Next Page -->
-                    <a href="{{ $doctorants->nextPageUrl() }}" class="px-3 py-1 rounded-md border border-gray-300 text-sm font-medium {{ $doctorants->hasMorePages() ? 'bg-white text-gray-700 hover:bg-gray-50' : 'bg-gray-100 text-gray-400 cursor-not-allowed' }}">
+                    <a href="{{ $doctorants->nextPageUrl() }}" class="px-3 py-1 rounded-md border border-gray-300 dark:border-gray-600 text-sm font-medium {{ $doctorants->hasMorePages() ? 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700' : 'bg-gray-100 dark:bg-gray-600 text-gray-400 dark:text-gray-300 cursor-not-allowed' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                         </svg>
                     </a>
 
                     <!-- Last Page -->
-                    <a href="{{ $doctorants->url($doctorants->lastPage()) }}" class="px-3 py-1 rounded-md border border-gray-300 text-sm font-medium {{ $doctorants->currentPage() == $doctorants->lastPage() ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50' }}">
+                    <a href="{{ $doctorants->url($doctorants->lastPage()) }}" class="px-3 py-1 rounded-md border border-gray-300 dark:border-gray-600 text-sm font-medium {{ $doctorants->currentPage() == $doctorants->lastPage() ? 'bg-gray-100 dark:bg-gray-600 text-gray-400 dark:text-gray-300 cursor-not-allowed' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
                         </svg>
@@ -140,42 +140,42 @@
 
 
             <!-- Column-specific Search Filters - Mobile collapsed -->
-            <div class="px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 border-t border-gray-200">
+            <div class="px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600">
                 <details class="group">
-                    <summary class="flex justify-between items-center cursor-pointer text-sm font-medium text-gray-700">
+                    <summary class="flex justify-between items-center cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300">
                         <span>Filtres avancés</span>
-                        <svg class="h-5 w-5 text-gray-500 transform group-open:rotate-180 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <svg class="h-5 w-5 text-gray-500 dark:text-gray-400 transform group-open:rotate-180 transition-transform" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                         </svg>
                     </summary>
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mt-2">
                         <div>
-                            <label class="block text-xs font-medium text-gray-700 mb-1">CNE</label>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">CNE</label>
                             <input type="text" id="filter-cne"
-                                   class="w-full px-2 py-1 border border-gray-300 rounded-md text-xs sm:text-sm filter-input">
+                                   class="w-full px-2 py-1 border border-gray-300 dark:border-gray-600 rounded-md text-xs sm:text-sm filter-input bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-gray-700 mb-1">CIN</label>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">CIN</label>
                             <input type="text" id="filter-cin"
-                                   class="w-full px-2 py-1 border border-gray-300 rounded-md text-xs sm:text-sm filter-input">
+                                   class="w-full px-2 py-1 border border-gray-300 dark:border-gray-600 rounded-md text-xs sm:text-sm filter-input bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-gray-700 mb-1">Nom</label>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Nom</label>
                             <input type="text" id="filter-nom"
-                                   class="w-full px-2 py-1 border border-gray-300 rounded-md text-xs sm:text-sm filter-input">
+                                   class="w-full px-2 py-1 border border-gray-300 dark:border-gray-600 rounded-md text-xs sm:text-sm filter-input bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-gray-700 mb-1">Prénom</label>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Prénom</label>
                             <input type="text" id="filter-prenom"
-                                   class="w-full px-2 py-1 border border-gray-300 rounded-md text-xs sm:text-sm filter-input">
+                                   class="w-full px-2 py-1 border border-gray-300 dark:border-gray-600 rounded-md text-xs sm:text-sm filter-input bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-gray-700 mb-1">Encadrant</label>
+                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Encadrant</label>
                             <input type="text" id="filter-encadrant"
-                                   class="w-full px-2 py-1 border border-gray-300 rounded-md text-xs sm:text-sm filter-input">
+                                   class="w-full px-2 py-1 border border-gray-300 dark:border-gray-600 rounded-md text-xs sm:text-sm filter-input bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
                         </div>
                         <div class="flex items-end">
-                            <button id="reset-filters" class="px-3 py-1 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 text-xs sm:text-sm w-full">
+                            <button id="reset-filters" class="px-3 py-1 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-300 rounded-md text-xs sm:text-sm w-full">
                                 Réinitialiser
                             </button>
                         </div>
@@ -185,41 +185,41 @@
 
             <!-- Responsive Table -->
             <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200 hidden sm:table">
-                    <thead class="bg-gray-50">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 hidden sm:table">
+                    <thead class="bg-gray-50 dark:bg-gray-700">
                         <tr>
-                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CNE</th>
-                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CIN</th>
-                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
-                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prénom</th>
-                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Soutenance</th>
-                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Situation</th>
-                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Formation</th>
-                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Encadrant</th>
-                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">CNE</th>
+                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">CIN</th>
+                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Nom</th>
+                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Prénom</th>
+                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Date Soutenance</th>
+                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Situation</th>
+                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Formation</th>
+                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Encadrant</th>
+                            <th class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
+                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                         @foreach($doctorants as $doctorant)
-                        <tr class="doctorant-row cursor-pointer hover:bg-gray-50"
+                        <tr class="doctorant-row cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
                             data-cne="{{ $doctorant->CNE }}"
                             data-cin="{{ $doctorant->CIN }}"
                             data-nom="{{ $doctorant->NOM }}"
                             data-prenom="{{ $doctorant->PRENOM }}"
                             data-encadrant="{{ $doctorant->ENCADRANT }}"
                             onclick="window.location='{{ route('doctorants.show', $doctorant->id) }}'">
-                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $doctorant->CNE }}</td>
-                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $doctorant->CIN }}</td>
-                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $doctorant->NOM }}</td>
-                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $doctorant->PRENOM }}</td>
-                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ \Carbon\Carbon::parse($doctorant->DATESOUTENANCE)->format('Y-m-d') }}</td>
-                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $doctorant->SITUATION }}</td>
-                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $doctorant->FORMATION }}</td>
-                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $doctorant->ENCADRANT }}</td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{{ $doctorant->CNE }}</td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{{ $doctorant->CIN }}</td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{{ $doctorant->NOM }}</td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{{ $doctorant->PRENOM }}</td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{{ \Carbon\Carbon::parse($doctorant->DATESOUTENANCE)->format('Y-m-d') }}</td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{{ $doctorant->SITUATION }}</td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{{ $doctorant->FORMATION }}</td>
+                            <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">{{ $doctorant->ENCADRANT }}</td>
                             <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <div class="flex space-x-2">
                                     <a href="{{ route('doctorants.show', $doctorant->id) }}"
-                                        class="text-blue-600 hover:text-blue-900"
+                                        class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300"
                                         title="Voir détails">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -230,7 +230,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                            class="text-red-600 hover:text-red-900"
+                                            class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300"
                                             onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce doctorant?')"
                                             title="Supprimer">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -248,7 +248,7 @@
                 <!-- Mobile List View -->
                 <div class="sm:hidden space-y-3 p-3">
                     @foreach($doctorants as $doctorant)
-                    <div class="doctorant-row bg-white rounded-lg shadow p-4 cursor-pointer hover:bg-gray-50"
+                    <div class="doctorant-row bg-white dark:bg-gray-700 rounded-lg shadow p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600"
                          data-cne="{{ $doctorant->CNE }}"
                          data-cin="{{ $doctorant->CIN }}"
                          data-nom="{{ $doctorant->NOM }}"
@@ -257,8 +257,8 @@
                          onclick="window.location='{{ route('doctorants.show', $doctorant->id) }}'">
                         <div class="flex justify-between items-start">
                             <div>
-                                <h4 class="font-medium text-gray-900">{{ $doctorant->PRENOM }} {{ $doctorant->NOM }}</h4>
-                                <div class="text-sm text-gray-500 mt-1">
+                                <h4 class="font-medium text-gray-900 dark:text-white">{{ $doctorant->PRENOM }} {{ $doctorant->NOM }}</h4>
+                                <div class="text-sm text-gray-500 dark:text-gray-300 mt-1">
                                     <div><span class="font-medium">CNE:</span> {{ $doctorant->CNE }}</div>
                                     <div><span class="font-medium">CIN:</span> {{ $doctorant->CIN }}</div>
                                     <div><span class="font-medium">Date Soutenance:</span> {{ \Carbon\Carbon::parse($doctorant->DATESOUTENANCE)->format('Y-m-d') }}</div>
@@ -267,7 +267,7 @@
                             </div>
                             <div class="flex space-x-2">
                                 <a href="{{ route('doctorants.show', $doctorant->id) }}"
-                                    class="text-blue-600 hover:text-blue-900 p-1"
+                                    class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 p-1"
                                     title="Voir détails">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -278,7 +278,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
-                                        class="text-red-600 hover:text-red-900 p-1"
+                                        class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 p-1"
                                         onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce doctorant?')"
                                         title="Supprimer">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -294,13 +294,13 @@
             </div>
 
             <!-- Pagination Controls (Bottom) - Mobile simplified -->
-            <div class="px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-2">
-                <div class="text-xs sm:text-sm text-gray-700">
+            <div class="px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600 flex flex-col sm:flex-row items-center justify-between gap-2">
+                <div class="text-xs sm:text-sm text-gray-700 dark:text-gray-300">
                     Affichage de <span class="font-medium">{{ $doctorants->firstItem() }}</span> à <span class="font-medium">{{ $doctorants->lastItem() }}</span> sur <span class="font-medium">{{ $doctorants->total() }}</span>
                 </div>
                 <div class="flex space-x-1">
                     <!-- Previous Page -->
-                    <a href="{{ $doctorants->previousPageUrl() }}" class="px-2 py-1 rounded-md border border-gray-300 text-xs sm:text-sm font-medium {{ $doctorants->onFirstPage() ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50' }}">
+                    <a href="{{ $doctorants->previousPageUrl() }}" class="px-2 py-1 rounded-md border border-gray-300 dark:border-gray-600 text-xs sm:text-sm font-medium {{ $doctorants->onFirstPage() ? 'bg-gray-100 dark:bg-gray-600 text-gray-400 dark:text-gray-300 cursor-not-allowed' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                         </svg>
@@ -312,7 +312,7 @@
                     </span>
 
                     <!-- Next Page -->
-                    <a href="{{ $doctorants->nextPageUrl() }}" class="px-2 py-1 rounded-md border border-gray-300 text-xs sm:text-sm font-medium {{ $doctorants->hasMorePages() ? 'bg-white text-gray-700 hover:bg-gray-50' : 'bg-gray-100 text-gray-400 cursor-not-allowed' }}">
+                    <a href="{{ $doctorants->nextPageUrl() }}" class="px-2 py-1 rounded-md border border-gray-300 dark:border-gray-600 text-xs sm:text-sm font-medium {{ $doctorants->hasMorePages() ? 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700' : 'bg-gray-100 dark:bg-gray-600 text-gray-400 dark:text-gray-300 cursor-not-allowed' }}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                         </svg>

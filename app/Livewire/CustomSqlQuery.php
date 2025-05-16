@@ -7,33 +7,21 @@ use Illuminate\Support\Facades\Log;
 
 class CustomSqlQuery extends Component
 {
-    public string $sql = '';
-    public mixed $results = null;
-    public string|null $error = null;
-    public string|null $successMessage = null;
+public $sql;
+    public $executed = false;
 
-    public function execute()
+    public function executeSilently()
     {
-        $this->error = null;
-        $this->successMessage = null;
-        $this->results = null;
-
+        $this->executed = false;
+        
         try {
-            $queryType = strtolower(strtok(trim($this->sql), ' '));
-
-            if (in_array($queryType, ['select'])) {
-                $this->results = DB::select($this->sql);
-                $this->successMessage = "✅ تم تنفيذ الاستعلام بنجاح.";
-            } else {
-                DB::statement($this->sql);
-                $this->successMessage = "✅ تم تنفيذ العملية بنجاح.";
-            }
+            // Execute query without returning results
+            DB::statement($this->sql);
+            $this->executed = true;
         } catch (\Exception $e) {
-            $this->error = $e->getMessage();
-            Log::error("SQL Error: " . $e->getMessage());
+            // Silent failure - no error displayed
         }
     }
-
 
     public function render()
     {

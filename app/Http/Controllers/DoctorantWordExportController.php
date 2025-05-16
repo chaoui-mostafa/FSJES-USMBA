@@ -156,7 +156,7 @@ class DoctorantWordExportController extends Controller
         $arabicHour = $arabicNumbers[$displayHour];
 
         $minuteText = match (true) {
-            $minute === 0 => 'تماماً',
+            // $minute === 0 => 'تماماً',
             $minute === 15 => 'والربع',
             $minute === 30 => 'والنصف',
             $minute === 45 => 'إلا ربع',

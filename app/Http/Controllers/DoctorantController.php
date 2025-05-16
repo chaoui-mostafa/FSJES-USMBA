@@ -105,7 +105,11 @@ class DoctorantController extends Controller
 
     public function show(Doctorant $doctorant)
     {
+        
+
         try {
+            // dd($doctorant);
+
             return view('doctorants.show', compact('doctorant'));
         } catch (\Exception $e) {
             return redirect()->route('doctorants.index')->with('error', 'خطأ في عرض البيانات: ' . $e->getMessage());
