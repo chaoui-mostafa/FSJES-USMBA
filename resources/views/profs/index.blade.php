@@ -84,7 +84,7 @@
     <div class="px-4 py-3 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600 flex items-center justify-between">
         <div class="flex items-center space-x-2">
             <span class="text-sm text-gray-700 dark:text-gray-300">
-                Affichage de <span class="font-medium">{{ $profs->firstItem() }}</span> à <span class="font-medium">{{ $profs->lastItem() }}</span> sur <span class="font-medium">{{ $profs->total() }}</span> 
+                Affichage de <span class="font-medium">{{ $profs->firstItem() }}</span> à <span class="font-medium">{{ $profs->lastItem() }}</span> sur <span class="font-medium">{{ $profs->total() }}</span>
             </span>
         </div>
         <div class="flex space-x-1">

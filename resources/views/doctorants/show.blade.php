@@ -66,11 +66,7 @@
 
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">Sexe</p>
-                            <p class="font-medium text-gray-800 dark:text-gray-200">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $doctorant->SEXE == 'M' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100' : 'bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-100' }}">
-                                    {{ $doctorant->SEXE == 'M' ? 'Masculin' : 'Féminin' }}
-                                </span>
-                            </p>
+                            <p class="font-medium text-gray-800 dark:text-gray-200">{{ $doctorant->SEXE ?? 'N/A' }}</p>
                         </div>
 
                         <div>
@@ -241,7 +237,7 @@
             </div>
             @endif
         </div>
-        
+
     </div>
 </div>
 

@@ -10,6 +10,8 @@ use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Validators\Failure;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class ProfesseursImport implements ToModel, WithHeadingRow, SkipsOnError, SkipsOnFailure
 {
@@ -18,17 +20,52 @@ class ProfesseursImport implements ToModel, WithHeadingRow, SkipsOnError, SkipsO
 
     private $rowCount = 0;
     private $importedCount = 0;
+    private $skippedCount = 0;
     private $customErrors = [];
+    private $skippedRows = [];
+    private $existingEmails = [];
+
+    public function __construct()
+    {
+        // Get all existing emails to check for duplicates
+        $this->existingEmails = Prof::pluck('email_professionnel')->toArray();
+    }
 
     public function model(array $row)
     {
         $this->rowCount++;
 
         try {
+            $email = $row['emailprofessionnel'] ?? null;
+
+            // Skip if email is empty or already exists
+            if (empty($email)) {
+                $this->skippedCount++;
+                $this->skippedRows[] = [
+                    'row' => $this->rowCount,
+                    'reason' => 'Email vide',
+                    'data' => $row
+                ];
+                return null;
+            }
+
+            if (in_array($email, $this->existingEmails)) {
+                $this->skippedCount++;
+                $this->skippedRows[] = [
+                    'row' => $this->rowCount,
+                    'reason' => 'Email déjà existant: ' . $email,
+                    'data' => $row
+                ];
+                return null;
+            }
+
+            // Add to existing emails to prevent duplicates in the same import
+            $this->existingEmails[] = $email;
+
             $prof = new Prof([
                 'nom_prenom'          => $row['nomprenom'] ?? null,
                 'nom_prenom_arabe'    => $row['nomprenomarabe'] ?? null,
-                'email_professionnel' => $row['emailprofessionnel'] ?? null,
+                'email_professionnel' => $email,
                 'numero_telephone'    => $row['numerotelephone'] ?? null,
                 'grade'               => $row['grade'] ?? null,
                 'grade_ar'            => $row['gradear'] ?? null,
@@ -42,6 +79,7 @@ class ProfesseursImport implements ToModel, WithHeadingRow, SkipsOnError, SkipsO
                 'prof'                => $row['prof'] ?? null,
                 'genre'               => $row['genre'] ?? null,
                 'status_ar'           => $row['statusar'] ?? null,
+                'is_new'             => true // Mark as new import
             ]);
 
             $this->importedCount++;
@@ -54,27 +92,36 @@ class ProfesseursImport implements ToModel, WithHeadingRow, SkipsOnError, SkipsO
         }
     }
 
-    // public function rules(): array
-    // {
-    //     return [
-    //         'nomprenom'          => 'required|string|max:255',
-    //         'nomprenomarabe'     => 'required|string|max:255',
-    //         'emailprofessionnel' => 'required|email|max:255|unique:profs,email_professionnel',
-    //         'numerotelephone'    => 'nullable|string|max:20',
-    //         'grade'              => 'required|string|max:100',
-    //         'gradear'            => 'required|string|max:100',
-    //         'departement'        => 'required|string|max:255',
-    //         'departementar'      => 'required|string|max:255',
-    //         'etablissementfr'    => 'required|string|max:255',
-    //         'etablissementar'    => 'required|string|max:255',
-    //         'type'              => 'required|string|max:50',
-    //         'sexe'              => 'required|string|in:M,F',
-    //         'doc'               => 'nullable|string|max:50',
-    //         'prof'              => 'nullable|string|max:50',
-    //         'genre'             => 'required|string|max:50',
-    //         'statusar'          => 'required|string|max:100',
-    //     ];
-    // }
+    public function rules(): array
+    {
+        return [
+            'nomprenom'          => 'required|string|max:255',
+            'nomprenomarabe'     => 'required|string|max:255',
+            'emailprofessionnel' => [
+                'required',
+                'email',
+                'max:255',
+                function ($attribute, $value, $fail) {
+                    if (in_array($value, $this->existingEmails)) {
+                        $fail('Cet email professionnel existe déjà dans la base de données');
+                    }
+                }
+            ],
+            'numerotelephone'    => 'nullable|string|max:20',
+            'grade'              => 'required|string|max:100',
+            'gradear'            => 'required|string|max:100',
+            'departement'        => 'required|string|max:255',
+            'departementar'      => 'required|string|max:255',
+            'etablissementfr'    => 'required|string|max:255',
+            'etablissementar'    => 'required|string|max:255',
+            'type'              => 'required|string|max:50',
+            'sexe'              => 'required|string|in:M,F',
+            'doc'               => 'nullable|string|max:50',
+            'prof'              => 'nullable|string|max:50',
+            'genre'             => 'required|string|max:50',
+            'statusar'          => 'required|string|max:100',
+        ];
+    }
 
     public function customValidationMessages()
     {
@@ -107,6 +154,11 @@ class ProfesseursImport implements ToModel, WithHeadingRow, SkipsOnError, SkipsO
         return $this->importedCount;
     }
 
+    public function getSkippedCount(): int
+    {
+        return $this->skippedCount;
+    }
+
     public function getErrorCount(): int
     {
         return count($this->failures()) + count($this->customErrors);
@@ -119,7 +171,12 @@ class ProfesseursImport implements ToModel, WithHeadingRow, SkipsOnError, SkipsO
             $this->customErrors
         );
     }
-    public function getErrors(): array
+
+    public function getSkippedRows(): array
+    {
+        return $this->skippedRows;
+    }
+     public function getErrors()
     {
         return $this->errors;
     }

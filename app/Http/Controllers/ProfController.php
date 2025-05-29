@@ -22,7 +22,8 @@ class ProfController extends Controller
         try {
             if ($request->ajax()) {
                 return response()->json([
-                    'profs' => Prof::with('laboratoire')
+                    'profs' => Prof::where('is_new', true)
+                        ->with('laboratoire')
                         ->when($request->search, function($query) use ($request) {
                             $query->where('nom_prenom', 'like', '%'.$request->search.'%')
                                   ->orWhere('email_professionnel', 'like', '%'.$request->search.'%')
@@ -33,7 +34,7 @@ class ProfController extends Controller
                 ]);
             }
 
-            $profs = Prof::with('laboratoire')->paginate(1090);
+            $profs = Prof::where('is_new', true)->with('laboratoire')->paginate(1090);
             return view('profs.index', compact('profs'));
 
         } catch (\Exception $e) {
@@ -72,9 +73,9 @@ class ProfController extends Controller
                 'etablissement_ar' => 'required|string|max:255',
                 'type' => 'required|string|max:255',
                 'status_ar' => 'nullable|string|max:255',
-                // 'id_laboratoire' => 'nullable|exists:laboratoires,id',
-                // 'doc' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
             ]);
+
+            $validated['is_new'] = true; // Mark new records as new
 
             if ($request->hasFile('doc')) {
                 try {
@@ -141,12 +142,10 @@ class ProfController extends Controller
                 'type' => 'required|string|max:255',
                 'status_ar' => 'nullable|string|max:255',
                 'id_laboratoire' => 'nullable|exists:laboratoires,id',
-                // 'doc' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
             ]);
 
             if ($request->hasFile('doc')) {
                 try {
-                    // Delete old document if exists
                     if ($prof->doc) {
                         Storage::disk('public')->delete($prof->doc);
                     }
@@ -176,7 +175,6 @@ class ProfController extends Controller
     public function destroy(Prof $prof)
     {
         try {
-            // Delete associated document if exists
             if ($prof->doc) {
                 Storage::disk('public')->delete($prof->doc);
             }
@@ -203,37 +201,45 @@ class ProfController extends Controller
     }
 
     public function history()
-{
-    $profs = Prof::with('laboratoire')->where('is_new', false)->paginate(1090);
-    return view('profs.history', compact('profs'));
-}
+    {
+        $profs = Prof::with('laboratoire')->where('is_new', false)->paginate(1090);
+        return view('profs.history', compact('profs'));
+    }
 
-    public function import(Request $request)
+     public function import(Request $request)
     {
         try {
             $request->validate([
                 'excel_file' => 'required|file|mimes:xlsx,xls,csv|max:10240'
             ]);
 
-            // تحديث جميع البيانات السابقة كقديمة
-            Prof::query()->update(['is_new' => false]);
-            $import = new ProfesseursImport();
-            // $import = new ProfesseursImport ;
+            // Get all existing emails to check for duplicates
+            $existingEmails = Prof::pluck('email_professionnel')->toArray();
+
+            // Delete all old data before import
+            Prof::query()->delete();
+
+            $import = new ProfesseursImport($existingEmails);
             Excel::import($import, $request->file('excel_file'));
 
-            // بعد الاستيراد، جميع البيانات المستوردة تعتبر جديدة
-            Prof::whereNull('is_new')->update(['is_new' => true]);
-
             $importedCount = $import->getRowCount();
+            $skippedCount = $import->getSkippedCount();
             $errorCount = $import->getErrorCount();
 
-            if ($errorCount > 0) {
+            // Get only the newly imported professors
+            $newProfs = Prof::with('laboratoire')->get();
+
+            if ($errorCount > 0 || $skippedCount > 0) {
                 return back()
-                    ->with('warning', "Importation partielle réussie: $importedCount enregistrements importés, $errorCount erreurs")
-                    ->with('import_errors', $import->getErrors());
+                    ->with('warning', "Importation partielle réussie: $importedCount enregistrements importés, $skippedCount doublons ignorés, $errorCount erreurs")
+                    ->with('import_errors', $import->getErrors())
+                    ->with('skipped_rows', $import->getSkippedRows())
+                    ->with('new_profs', $newProfs);
             }
 
-            return back()->with('success', "Importation réussie: $importedCount professeurs importés");
+            return back()
+                ->with('success', "Importation réussie: $importedCount professeurs importés")
+                ->with('new_profs', $newProfs);
 
         } catch (ExcelValidationException $e) {
             $failures = $e->failures();
@@ -251,4 +257,18 @@ class ProfController extends Controller
                 ->withInput();
         }
     }
-};
+
+
+    public function clearOldData()
+    {
+        try {
+            // Delete all non-new professors
+            $deletedCount = Prof::where('is_new', false)->delete();
+
+            return back()->with('success', "Anciennes données supprimées avec succès: $deletedCount enregistrements supprimés");
+        } catch (\Exception $e) {
+            Log::error('Error clearing old data: '.$e->getMessage());
+            return back()->with('error', 'Erreur lors de la suppression des anciennes données: '.$e->getMessage());
+        }
+    }
+}

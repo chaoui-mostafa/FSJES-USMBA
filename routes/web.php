@@ -13,6 +13,9 @@ use App\Http\Controllers\DoctorantWordExportController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\ProfileController;
+// use App\Http\Controllers\RegistrationCertificate;
+use App\Http\Controllers\RegistrationCertificateController;
+use App\Http\Controllers\SuccessCertificateController;
 
 /*
 |------------------------------------------------------------------
@@ -81,6 +84,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/doctorants/export', [DoctorantController::class, 'export'])->name('doctorants.export');
     Route::post('/doctorants/import', [DoctorantController::class, 'import'])->name('doctorants.import');
     Route::get('/doctorants/template', [DoctorantController::class, 'template'])->name('doctorants.template');
+    // Route::get('/doctorants/{id}/RegistrationCertifica/', [RegistrationCertificate::class, 'generateWord'])->name('doctorants.registration-certificate');
 
     /*
     |------------------------------------------------------------------
@@ -124,6 +128,23 @@ Route::put('/profile/update', [ProfileController::class, 'update'])->name('profi
     Route::get('/doctorant/{id}/export-word', [DoctorantWordExportController::class, 'export'])->name('doctorants.export-word');
     Route::get('/doctorant/{id}/annonce', [DoctorantWordExportController::class, 'showForm'])->name('doctorant.annonce.form');
     Route::post('/doctorant/annonce/generate', [DoctorantWordExportController::class, 'generate'])->name('doctorant.annonce.generate');
+    // Route::get('doctorants/{id}/RegistrationCertifica', [DoctorantWordExportController::class, 'generate'])->name('doctorants.registration-certificate');
+// use App\Http\Controllers\RegistrationCertificate;
+
+Route::get('doctorants/{id}/RegistrationCertifica', [RegistrationCertificateController::class, 'generateWord'])->name('doctorants.registration-certificate');
+Route::get('doctorants/{id}/Success Certificate', [SuccessCertificateController::class, 'generateWord'])->name('doctorants.Success-Certificate');
+
+    /*
+    |------------------------------------------------------------------
+    | Document Management Routes
+    |------------------------------------------------------------------
+    */
+    Route::resource('documents', DocumentController::class);
+    Route::post('/documents/upload', [DocumentController::class, 'upload'])->name('documents.upload');
+    Route::get('/documents/download/{document}', [DocumentController::class, 'download'])->name('documents.download');
+    Route::delete('/documents/{document}', [DocumentController::class, 'destroy'])->name('documents.destroy');
+
+
 });
 
 // routes/web.php
