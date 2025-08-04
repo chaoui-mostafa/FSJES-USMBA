@@ -61,7 +61,7 @@ cd la-fac
 ###  Install Dependencies
 ```bash
 composer install
-npm 
+npm install
 ```
 
 ### 2️⃣ Set Up Environment Variables
@@ -103,6 +103,17 @@ composer update
 ```bash
 git pull origin main
 ```
+### 🧑‍💻 Author
+- Mostafa Chaoui
+Full-Stack Developer | Expert DevOps
+
+- [Mostafa Chaoui](https://www.linkedin.com/in/mostafa-chaoui/)
+- [chaoui-mostafa](https://github.com/chaoui-mostafa)
+- [chaoui.dev@gmail.com](mailto:chaoui.mostafa@gmail.com)
+
+
+
+
 
 
 
