@@ -105,11 +105,11 @@ git pull origin main
 ```
 ### 🧑‍💻 Author
 - Mostafa Chaoui
-Full-Stack Developer | Expert DevOps
+**Full-Stack Developer | Expert DevOps**
 
-- [Mostafa Chaoui](https://www.linkedin.com/in/mostafa-chaoui/)
-- [chaoui-mostafa](https://github.com/chaoui-mostafa)
-- [chaoui.dev@gmail.com](mailto:chaoui.mostafa@gmail.com)
+- [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mostafa-chaoui/) [Mostafa Chaoui](https://www.linkedin.com/in/mostafa-chaoui/)
+- [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white)](https://github.com/chaoui-mostafa) [chaoui-mostafa](https://github.com/chaoui-mostafa)
+- [![Email](https://img.shields.io/badge/Email-chaoui.mostafa@gmail.com-D14836?style=flat&logo=gmail&logoColor=white)](mailto:chaoui.mostafa@gmail.com)
 
 
 
