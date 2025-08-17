@@ -43,5 +43,19 @@ jobs:
       - name: Generate app key
         run: php artisan key:generate
 
-      - name: Execute tests
-        run: echo "Skipping tests for this project"
+      - name: Run migrations
+        run: php artisan migrate --env=testing --force
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install NPM dependencies
+        run: npm ci
+
+      - name: Build Vite assets
+        run: npm run build
+
+      - name: Execute Laravel tests
+        run: php artisan test --parallel --coverage
