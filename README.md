@@ -13,7 +13,7 @@
 - **Role:** Full-Stack Web Developer  
 
 ### **Technologies Used**
-- Laravel 11 (PHP 8.1)
+- Laravel 11 (PHP 8.3)
 - Livewire
 - MySQL
 - Tailwind CSS
