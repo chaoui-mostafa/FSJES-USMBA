@@ -1,4 +1,4 @@
-# 🎓 Doctorants Document Management System - USMBA Fes (FesJES Dhar El Mahraz)
+# 🎓 Doctorants Document Management System - USMBA Fes (FSJES Dhar El Mahraz)
 
 ## 📌 About the Project
 هذا المشروع هو تطبيق ويب لتسيير وإدارة وثائق طلبة الدكتوراه في **كلية العلوم القانونية والاقتصادية والاجتماعية – ظهر المهراز – جامعة سيدي محمد بن عبد الله بفاس**.  
